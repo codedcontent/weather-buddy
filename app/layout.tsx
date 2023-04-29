@@ -2,7 +2,8 @@ import "./globals.css";
 
 export const metadata = {
   title: "Weather Buddy",
-  description: "The most top-tear weather assistant out there.",
+  description:
+    "Weather Buddy is an advanced weather notification service. A good companion to have in your everyday life.",
 };
 
 export default function RootLayout({
