@@ -13,8 +13,20 @@ const AccountOptions = (props: Props) => {
       />
 
       <AccountOption
-        title="account details"
-        href="/account-details"
+        title="weather alerts"
+        href="/weather-alerts"
+        subtitle="Personal information, Email"
+      />
+
+      <AccountOption
+        title="notifications"
+        href="/notifications"
+        subtitle="Personal information, Email"
+      />
+
+      <AccountOption
+        title="subscription plan"
+        href="/subscription-plan"
         subtitle="Personal information, Email"
       />
     </div>

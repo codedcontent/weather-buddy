@@ -32,22 +32,24 @@ const AccountLayout = (props: Props) => {
         </div>
       </div>
 
-      <section className="w-[70%] h-[90%] bg-boardColor rounded-3xl p-8 mr-8">
+      <section className="w-[70%] h-[90%] bg-boardColor rounded-3xl mr-8">
         {/* Fixed Account Layout UI */}
-        <div className="flex w-full">
-          <div className="w-1/2">
-            <div className="w-[80%]">
+        <div className="flex w-full h-full">
+          <div className="w-1/2 border-r border-r-silver h-full">
+            <div className="py-8 pl-8">
               <p className="text-xl font-semibold">Account</p>
 
-              <div className="mt-10 space-y-6">
-                <UpgradePlanCard />
+              <div className="mt-10 space-y-12">
+                <div className="w-[80%]">
+                  <UpgradePlanCard />
+                </div>
 
                 <AccountOptions />
               </div>
             </div>
           </div>
 
-          <div className="w-1/2">{props.children}</div>
+          <div className="w-1/2 p-8">{props.children}</div>
         </div>
       </section>
     </main>
