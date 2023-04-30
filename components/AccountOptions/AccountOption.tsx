@@ -31,7 +31,7 @@ const AccountOption: React.FC<Props> = ({ title, subtitle, href }) => {
       <Link href={`account/${href}`} className="flex items-start w-full">
         {accountOptionIcon}
 
-        <div className="w-full border-b border-r-silver flex-1 ml-4 pb-3">
+        <div className="w-full border-b border-b-silver flex-1 ml-4 pb-3">
           <div className="w-[80%] flex">
             <div className="mr-1 flex-1">
               <p className="font-medium text-lg capitalize">{title}</p>

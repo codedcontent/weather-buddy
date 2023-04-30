@@ -19,7 +19,7 @@ module.exports = {
         primary: "#525298",
         "success-green": "#5ADD0A",
         "danger-red": "#FF0302",
-        silver: "#C0C0C0",
+        silver: "#363846",
       },
       fontFamily: {
         sans: "var(--font-poppins)",

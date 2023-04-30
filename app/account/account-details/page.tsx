@@ -54,7 +54,7 @@ const AccountDetails: React.FC<Props> = ({}) => {
         </Link>
       </div>
 
-      <div className="pl-8 mt-10 mb-6">
+      <div className="pl-8 mt-14 mb-6">
         <hr className="border-silver" />
       </div>
 

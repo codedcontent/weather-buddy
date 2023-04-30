@@ -1,12 +1,12 @@
 "use client";
 
 import Button from "@/components/Button";
-import WeatherLocationAlertSetter from "@/components/weatherLocationAlertSetter/WeatherLocationAlertSetter";
+import CustomCheckbox from "@/components/CustomCheckbox";
 import React from "react";
 
 type Props = {};
 
-const WeatherAlerts: React.FC<Props> = (props: Props) => {
+const Notifications: React.FC<Props> = (props: Props) => {
   const saveChanges = () => {};
 
   const discardChanges = () => {};
@@ -14,7 +14,7 @@ const WeatherAlerts: React.FC<Props> = (props: Props) => {
   return (
     <div className="w-full">
       {/* Page title */}
-      <p className="text-xl font-semibold capitalize px-8">Weather Alerts</p>
+      <p className="text-xl font-semibold capitalize px-8">Notifications</p>
 
       {/* <-- --> */}
       <div className="pl-8 my-6">
@@ -23,16 +23,18 @@ const WeatherAlerts: React.FC<Props> = (props: Props) => {
 
       {/* Page description */}
       <div className="px-8">
-        <p className="font-semibold">Weather locations</p>
+        <p className="font-semibold">Notification preferences</p>
         <p className="font-light text-sm">
-          Choose the locations you want to receive alerts on - and the times you
-          want to receive them
+          Choose the various ways you would like to receive your weather alerts
         </p>
       </div>
 
-      {/* Updatable weather locations and alert times */}
-      <div className="px-8 mt-6">
-        <WeatherLocationAlertSetter />
+      {/* Updatable notification preferences */}
+      <div className="px-8 mt-8 grid grid-cols-2 gap-y-4">
+        <CustomCheckbox label="SMS alerts" />
+        <CustomCheckbox label="Email alerts" />
+        <CustomCheckbox label="WhatsApp alerts" />
+        <CustomCheckbox label="Push notifications" />
       </div>
 
       {/* <-- --> */}
@@ -55,4 +57,4 @@ const WeatherAlerts: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default WeatherAlerts;
+export default Notifications;
