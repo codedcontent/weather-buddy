@@ -49,7 +49,7 @@ const AccountLayout = (props: Props) => {
             </div>
           </div>
 
-          <div className="w-1/2 p-8">{props.children}</div>
+          <div className="w-1/2 py-8">{props.children}</div>
         </div>
       </section>
     </main>
