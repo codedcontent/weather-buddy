@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import React from "react";
 import SubscriptionPlans from "@/components/subscriptionPlans/SubscriptionPlans";
