@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiChevronRight } from "react-icons/bi";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 type Subscription = {
+  id: number;
   name: string;
   description: string;
   features: string[];
@@ -14,19 +16,35 @@ type Subscription = {
 
 type SubscriptionCardProps = {
   subscription: Subscription;
+  setSelectedSubscriptionPlan: React.Dispatch<
+    React.SetStateAction<number | null>
+  >;
+  selectedSubscriptionPlan: number | null;
 };
 
 const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   subscription,
+  setSelectedSubscriptionPlan,
+  selectedSubscriptionPlan,
 }) => {
   const [expanded, setExpanded] = useState(false);
+
+  // Handle what happens when the users clicks a subscription plan card
+  const handleCardClick = () => {
+    setExpanded(true);
+    setSelectedSubscriptionPlan(subscription.id);
+  };
+
+  useEffect(() => {
+    setExpanded(selectedSubscriptionPlan ? true : false);
+  }, [selectedSubscriptionPlan]);
 
   return (
     <div className="w-full">
       {!expanded && (
         <div
           className="w-full flex items-center pb-4 pt-6 transition-all duration-500 hover:scale-105 cursor-pointer"
-          onClick={() => setExpanded(true)}
+          onClick={handleCardClick}
         >
           <div className="w-full">
             <div className="flex gap-2 items-center w-max">
@@ -54,15 +72,24 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
 
       {/* The expanded details */}
       {expanded && (
-        <div className="mt-4">
-          <ul className="list-disc list-inside">
+        <div className="mt-6">
+          <div className="flex gap-2 items-center w-full justify-between ">
+            <p className="font-bold capitalize">{subscription.name}</p>
+
+            <p className="font-black lowercase text-2xl text-primary">
+              ${subscription.price}/mo.
+            </p>
+          </div>
+
+          <ul className="list-none list-inside space-y-2">
             {subscription.features.map((feature, index) => (
-              <li key={index} className="text-gray-500">
-                {feature}
+              <li key={index} className=" flex gap-2">
+                <AiFillCheckCircle className="text-lg text-white" />
+
+                <p className="text-white text-sm font-light">{feature}</p>
               </li>
             ))}
           </ul>
-          <p className="font-bold mt-4">${subscription.price}/month</p>
         </div>
       )}
     </div>
