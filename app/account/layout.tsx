@@ -1,6 +1,6 @@
 "use client";
 
-import AccountOptions from "@/components/AccountOptions/AccountOptions";
+import AccountOptions from "@/components/accountOptions/AccountOptions";
 import Button from "@/components/Button";
 import ProfileCard from "@/components/ProfileCard";
 import UpgradePlanCard from "@/components/UpgradePlanCard";
