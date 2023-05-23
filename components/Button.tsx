@@ -1,22 +1,15 @@
 import React from "react";
 
-type Props = {
+interface Props {
   width?: string;
   filled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   title: string;
-};
+}
 
-const Button: React.FC<Props> = ({
-  /**
-   * width = "full" || "auto"
-   * filled = true || false
-   */
-  width = "auto",
-  filled = true,
-  onClick,
-  title,
-}) => {
+const Button: React.FC<
+  React.ButtonHTMLAttributes<HTMLButtonElement> & Props
+> = ({ width = "auto", filled = true, onClick, title, ...rest }) => {
   const buttonStyles = `px-6 py-3 rounded-3xl font-medium text-white ${
     width === "full" ? "w-full" : "w-auto"
   } ${
@@ -26,7 +19,7 @@ const Button: React.FC<Props> = ({
   }`;
 
   return (
-    <button className={buttonStyles} onClick={onClick}>
+    <button className={buttonStyles} onClick={onClick} {...rest}>
       {title}
     </button>
   );
