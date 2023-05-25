@@ -1,8 +1,8 @@
-export type SignUpFormProps = {
-  firstName: "";
-  lastName: "";
-  email: "";
-  phoneNumber: "";
-  password: "";
-  confirmPassword: "";
-};
+export interface SignUpFormProps {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
+}

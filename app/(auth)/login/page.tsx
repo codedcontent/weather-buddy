@@ -6,15 +6,51 @@ import React, { useState } from "react";
 import Textfield from "@/components/Textfield";
 import Button from "@/components/Button";
 import Link from "next/link";
+import { useFormik } from "formik";
+import loginSchema from "@/helpers/validation/login-form-validate";
+import { login } from "@/services/auth-service";
+import { toast } from "@/components/ui/Toast";
+import { useRouter } from "next/navigation";
 
-type Props = {};
+const Login = () => {
+  const router = useRouter();
 
-const Login = (props: Props) => {
-  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const loginFormInitialValues = {
+    email: "ogescoc2@gmail.com",
+    password: "passwordW4",
+  };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
+  const handleLogin = async () => {
+    try {
+      await login(formik.values.email, formik.values.password);
 
-  const handleLogin = () => {};
+      // Successful login
+      toast({
+        title: "Test title",
+        message: "You are logged in",
+        type: "success",
+      });
+
+      router.replace("/account");
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      toast({
+        title: errorCode,
+        message: errorMessage,
+        type: "error",
+        duration: 6000,
+      });
+    } finally {
+      formik.setSubmitting(true);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: loginFormInitialValues,
+    onSubmit: handleLogin,
+    validationSchema: loginSchema,
+  });
 
   return (
     <div className="w-full h-full">
@@ -27,15 +63,28 @@ const Login = (props: Props) => {
       </div>
 
       {/* Login Form */}
-      <form className="flex flex-col gap-y-0 my-6 gap-2">
+      <form
+        className="flex flex-col gap-y-0 my-6 gap-2"
+        onSubmit={formik.handleSubmit}
+      >
         {/* Email */}
-        <Textfield />
+        <Textfield
+          label="Email"
+          touched={formik.touched.email}
+          error={formik.errors.email}
+          fieldProps={formik.getFieldProps("email")}
+        />
 
         {/* Password */}
-        <Textfield />
+        <Textfield
+          label="Password"
+          touched={formik.touched.password}
+          error={formik.errors.password}
+          fieldProps={formik.getFieldProps("password")}
+        />
 
         <div className="mt-10">
-          <Button title="Login" onClick={handleLogin} />
+          <Button title="Login" type="submit" />
         </div>
       </form>
 

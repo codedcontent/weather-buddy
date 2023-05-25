@@ -8,39 +8,71 @@ import Link from "next/link";
 import React from "react";
 import { signup } from "@/services/auth-service";
 import { useFormik } from "formik";
-import signUpFormValidate from "@/helpers/validation/signup-form-validate";
+import createAccountSchema from "@/helpers/validation/signup-form-validate";
 import { SignUpFormProps } from "@/types/forms";
+import { toast } from "@/components/ui/Toast";
+import { createNewUserAccount } from "@/services/user-account-service";
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
+  const router = useRouter();
+
+  // Function to create a new user
+  const createUser = async (email: string, password: string) => {
+    try {
+      const newUser = await signup(email, password);
+
+      // Create a user account on the db
+      if (newUser.uid) {
+        const newUserDetails = {
+          firstName: formik.values.firstName,
+          lastName: formik.values.lastName,
+          phoneNumber: formik.values.phoneNumber,
+        };
+
+        await createNewUserAccount(newUserDetails, newUser.uid);
+
+        toast({
+          message: "You have successfully created an account!",
+          type: "success",
+          duration: 6000,
+        });
+
+        router.replace("/account");
+      }
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      toast({
+        title: errorCode,
+        message: errorMessage,
+        type: "error",
+      });
+    } finally {
+      formik.setSubmitting(false);
+    }
+  };
+
   // Function to handle form submission
   const handleSignup = (values: SignUpFormProps) => {
-    alert(JSON.stringify(values, null, 2));
+    createUser(values.email, values.password);
   };
 
   const signUpFormInitialValues: SignUpFormProps = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    password: "",
-    confirmPassword: "",
+    firstName: "oge",
+    lastName: "meph",
+    email: "ogescoc2@gmail.com",
+    phoneNumber: "12345678963",
+    password: "passwordW4",
+    confirmPassword: "passwordW4",
   };
 
   // Use the formik for our form management
   const formik = useFormik({
     initialValues: signUpFormInitialValues,
-    onSubmit: () => alert("Form submitted"),
-    validate: signUpFormValidate,
+    onSubmit: handleSignup,
+    validationSchema: createAccountSchema,
   });
-
-  // Function to create a new user
-  const createUser = async () => {
-    try {
-      await signup(formik.values.email, formik.values.password);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   return (
     <div className="w-full h-full">
@@ -60,74 +92,58 @@ const Signup = () => {
         {/* First & Last name */}
         <div className="flex w-full gap-6">
           <Textfield
-            name="firstName"
             label="First Name"
-            value={formik.values.firstName}
-            handleChange={formik.handleChange}
-            handleBlur={formik.handleBlur}
             touched={formik.touched.firstName}
             error={formik.errors.firstName}
+            fieldProps={formik.getFieldProps("firstName")}
           />
           <Textfield
-            name="lastName"
             label="Last Name"
-            value={formik.values.lastName}
-            handleChange={formik.handleChange}
-            handleBlur={formik.handleBlur}
             touched={formik.touched.lastName}
             error={formik.errors.lastName}
+            fieldProps={formik.getFieldProps("lastName")}
           />
         </div>
 
         {/* Email and Number */}
         <div className="flex w-full gap-6">
           <Textfield
-            name="email"
             label="Email"
-            value={formik.values.email}
-            handleChange={formik.handleChange}
-            handleBlur={formik.handleBlur}
             touched={formik.touched.email}
             error={formik.errors.email}
+            fieldProps={formik.getFieldProps("email")}
           />
           <Textfield
-            name="phoneNumber"
             label="Phone Number"
-            value={formik.values.phoneNumber}
-            handleChange={formik.handleChange}
-            handleBlur={formik.handleBlur}
             touched={formik.touched.phoneNumber}
             error={formik.errors.phoneNumber}
+            fieldProps={formik.getFieldProps("phoneNumber")}
           />
         </div>
 
         {/* Password */}
         <div className="flex w-full gap-6">
           <Textfield
-            name="password"
             label="Password"
-            value={formik.values.password}
-            handleChange={formik.handleChange}
-            handleBlur={formik.handleBlur}
             touched={formik.touched.password}
             error={formik.errors.password}
+            fieldProps={formik.getFieldProps("password")}
           />
           <Textfield
-            name="confirmPassword"
             label="Confirm password"
-            value={formik.values.confirmPassword}
-            handleChange={formik.handleChange}
-            handleBlur={formik.handleBlur}
             touched={formik.touched.confirmPassword}
             error={formik.errors.confirmPassword}
+            fieldProps={formik.getFieldProps("confirmPassword")}
           />
         </div>
 
-        {/* <div className="mt-6">
-          <Button title="Create Account" type="submit" />
-        </div> */}
-
-        <button type="submit">Submit</button>
+        <div className="mt-6">
+          <Button
+            title="Create Account"
+            type="submit"
+            loading={formik.isSubmitting}
+          />
+        </div>
       </form>
 
       {/* Create Account */}

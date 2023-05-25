@@ -1,21 +1,28 @@
 import { auth } from "@/lib/firebase-service";
 
 import {
+  User,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
 const signup = async (email: string, password: string) => {
-  createUserWithEmailAndPassword(auth, email, password);
+  const user = await createUserWithEmailAndPassword(auth, email, password);
+  return user.user;
 };
 
 const login = async (email: string, password: string) => {
-  signInWithEmailAndPassword(auth, email, password);
+  await signInWithEmailAndPassword(auth, email, password);
 };
 
-const onAuthChanged = (callback: () => void) => {
+const onAuthChanged = (callback: (user: User | null) => void) => {
   onAuthStateChanged(auth, callback);
 };
 
-export { signup, login, onAuthChanged };
+const logoutUser = async () => {
+  await signOut(auth);
+};
+
+export { signup, login, onAuthChanged, logoutUser };
