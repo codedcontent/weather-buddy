@@ -3,14 +3,21 @@
 import React from "react";
 import { FieldInputProps } from "formik";
 
-type Props = {
+interface Props {
   error: string | undefined;
   label: string;
   touched: boolean | undefined;
+  disabled?: boolean;
   fieldProps: FieldInputProps<any>;
-};
+}
 
-const Textfield: React.FC<Props> = ({ label, error, touched, fieldProps }) => {
+const Textfield: React.FC<Props> = ({
+  label,
+  error,
+  touched,
+  disabled,
+  fieldProps,
+}) => {
   return (
     <div className="mb-4 w-full">
       <label
@@ -25,6 +32,7 @@ const Textfield: React.FC<Props> = ({ label, error, touched, fieldProps }) => {
         type="text"
         placeholder={label}
         {...fieldProps}
+        disabled={disabled}
       />
 
       {error && touched ? (

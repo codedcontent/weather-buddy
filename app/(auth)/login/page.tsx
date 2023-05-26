@@ -26,20 +26,16 @@ const Login = () => {
 
       // Successful login
       toast({
-        title: "Test title",
-        message: "You are logged in",
+        message: "You are now logged in",
         type: "success",
       });
 
       router.replace("/account");
     } catch (error: any) {
       const errorCode = error.code;
-      const errorMessage = error.message;
       toast({
-        title: errorCode,
-        message: errorMessage,
+        message: errorCode,
         type: "error",
-        duration: 6000,
       });
     } finally {
       formik.setSubmitting(true);
@@ -73,6 +69,7 @@ const Login = () => {
           touched={formik.touched.email}
           error={formik.errors.email}
           fieldProps={formik.getFieldProps("email")}
+          disabled={formik.isSubmitting}
         />
 
         {/* Password */}
@@ -81,10 +78,11 @@ const Login = () => {
           touched={formik.touched.password}
           error={formik.errors.password}
           fieldProps={formik.getFieldProps("password")}
+          disabled={formik.isSubmitting}
         />
 
         <div className="mt-10">
-          <Button title="Login" type="submit" />
+          <Button title="Login" type="submit" loading={formik.isSubmitting} />
         </div>
       </form>
 

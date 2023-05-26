@@ -28,6 +28,7 @@ const Signup = () => {
           firstName: formik.values.firstName,
           lastName: formik.values.lastName,
           phoneNumber: formik.values.phoneNumber,
+          email: formik.values.email,
         };
 
         await createNewUserAccount(newUserDetails, newUser.uid);
