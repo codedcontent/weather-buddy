@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useSession } from "next-auth/react";
-// import useSWR from "swr";
 import CustomTextField from "@/components/CustomTextField";
 import { RegisterFormProps } from "@/types/types";
 import { useFormik } from "formik";

@@ -1,5 +1,4 @@
 import User from "@/models/User";
-import { LoginFormProps } from "@/types/types";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
@@ -8,7 +7,7 @@ import connectDB from "@/utils/db";
 const handler = NextAuth({
   pages: {
     error: "/login",
-    signIn: "/login",
+    // signIn: "/login",
   },
   providers: [
     CredentialsProvider({
@@ -53,6 +52,23 @@ const handler = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+      }
+
+      return token;
+    },
+    session: async ({ session, token }) => {
+      if (token) {
+        //   @ts-ignore
+        session.id = token.id;
+      }
+
+      return session;
+    },
+  },
 });
 
 export { handler as POST, handler as GET };

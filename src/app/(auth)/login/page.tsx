@@ -8,7 +8,6 @@ import { useFormik } from "formik";
 import { loginSchema } from "@/schemas/loginSchema";
 import { LoginFormProps } from "@/types/types";
 import { signIn } from "next-auth/react";
-import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";

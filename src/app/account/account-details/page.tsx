@@ -7,8 +7,23 @@ import { AccountDetailFormProps } from "@/types/types";
 import { useFormik } from "formik";
 import CustomButton from "@/components/CustomButton";
 import accountDetailsSchema from "@/schemas/accountDetailsSchema";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
 
 const AccountDetailsPage = () => {
+  const session = useSession();
+
+  // @ts-ignore
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+  const { data, error, isLoading } = useSWR(
+    //   @ts-ignore
+    `/api/users/${session.data?.id}`,
+    fetcher
+  );
+
+  console.log(data);
+
   const AccountDetailsInitialInput: AccountDetailFormProps = {
     firstName: "",
     email: "",
@@ -38,7 +53,6 @@ const AccountDetailsPage = () => {
   const discardChanges = () => {
     // Disable forms
     setSubmitting(true);
-    console.log("Discarding changes => ", values);
   };
 
   // Save changes of the form
