@@ -21,7 +21,7 @@ const AuthLayout: React.FC<Props> = ({ children }) => {
       </div>
 
       {/* Sign up && Log in screen */}
-      <section className="w-[70%] h-[90%] bg-wb-boardColor rounded-3xl p-8 mr-8">
+      <section className="w-[70%] h-[90%] bg-wb-boardColor rounded-3xl p-8 mr-8 relative">
         {children}
       </section>
     </main>

@@ -1,11 +1,7 @@
 export type CustomTextFieldProps = {
-  //   TODO: FIX THIS - NOT ALL ARE REQUIRED
-  error?: string | undefined;
-  label?: string;
-  placeholder?: string;
-  touched?: boolean | undefined;
-  disabled?: boolean;
-  //   fieldProps: FieldInputProps<any>;
+  error: string | undefined;
+  label: string;
+  touched: boolean | undefined;
 };
 
 export type CustomButtonProps = {
@@ -14,4 +10,18 @@ export type CustomButtonProps = {
   onClick?: () => void;
   label: string;
   loading?: boolean;
+};
+
+export type LoginFormProps = {
+  email: string;
+  password: string;
+};
+
+export type RegisterFormProps = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
 };
