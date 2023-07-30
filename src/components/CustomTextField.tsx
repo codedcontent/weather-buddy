@@ -11,6 +11,10 @@ const CustomTextField = ({
   HTMLInputElement
 > &
   CustomTextFieldProps) => {
+  const disabledInputStyle = props.disabled
+    ? "bg-gray-600 placeholder:text-neutral-200 cursor-not-allowed"
+    : "placeholder:text-neutral-500";
+
   return (
     <div className="mb-4 w-full">
       <label
@@ -21,8 +25,9 @@ const CustomTextField = ({
       </label>
 
       <input
-        className="border border-white bg-transparent rounded-xl py-2.5 px-6 w-full font-light placeholder:text-neutral-500 text-sm"
+        className={`border border-white bg-transparent rounded-xl py-2.5 px-6 w-full font-light text-sm ${disabledInputStyle}`}
         type="text"
+        placeholder={label ? label : props.placeholder}
         {...props}
       />
 

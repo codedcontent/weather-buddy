@@ -25,3 +25,10 @@ export type RegisterFormProps = {
   password: string;
   confirmPassword: string;
 };
+
+export type AccountDetailFormProps = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+};

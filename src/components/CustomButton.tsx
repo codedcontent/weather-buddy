@@ -24,7 +24,7 @@ const CustomButton = ({
       disabled={loading}
       {...rest}
     >
-      {loading && <Loader />}
+      {loading && <Loader variant="action" />}
       {label}
     </button>
   );
