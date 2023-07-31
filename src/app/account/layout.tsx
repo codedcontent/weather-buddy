@@ -67,7 +67,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
             </div>
           </div>
 
-          <div className="w-1/2 py-8">{children}</div>
+          <div className="w-1/2 py-8 relative">{children}</div>
         </div>
       </section>
     </main>
