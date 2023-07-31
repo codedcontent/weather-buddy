@@ -17,13 +17,13 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   const { status } = useSession();
   const router = useRouter();
 
-  console.log(useSession());
+  // console.log(useSession());
 
   useEffect(() => {
-    if (status === "loading" || status === "unauthenticated") {
+    if (status === "unauthenticated") {
       router.replace("/login");
     }
-  });
+  }, [router, status]);
 
   if (status === "loading" || status === "unauthenticated")
     return <Loader variant="page" />;

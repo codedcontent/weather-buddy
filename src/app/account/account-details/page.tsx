@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import CustomTextField from "@/components/CustomTextField";
 import { AccountDetailFormProps } from "@/types/types";
@@ -9,6 +9,7 @@ import CustomButton from "@/components/CustomButton";
 import accountDetailsSchema from "@/schemas/accountDetailsSchema";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
+import Loader from "@/components/Loader";
 
 const AccountDetailsPage = () => {
   const session = useSession();
@@ -22,13 +23,11 @@ const AccountDetailsPage = () => {
     fetcher
   );
 
-  console.log(data);
-
-  const AccountDetailsInitialInput: AccountDetailFormProps = {
-    firstName: "",
-    email: "",
-    lastName: "",
-    phoneNumber: "",
+  const accountDetailsInitialInput: AccountDetailFormProps = {
+    firstName: data?.firstName ?? "",
+    email: data?.email ?? "",
+    lastName: data?.lastName ?? "",
+    phoneNumber: data?.phoneNumber ?? "",
   };
 
   const handleFormSummit = (values: AccountDetailFormProps) => {
@@ -44,9 +43,10 @@ const AccountDetailsPage = () => {
     handleSubmit,
     setSubmitting,
   } = useFormik({
-    initialValues: AccountDetailsInitialInput,
+    initialValues: accountDetailsInitialInput,
     onSubmit: handleFormSummit,
     validationSchema: accountDetailsSchema,
+    enableReinitialize: true,
   });
 
   // Discard values of the form
@@ -81,50 +81,54 @@ const AccountDetailsPage = () => {
 
       {/* Updatable account details */}
       <div className="px-8">
-        <form
-          className="flex flex-col gap-y-0 mt-6 gap-2"
-          onSubmit={handleSubmit}
-        >
-          {/* First & Last name */}
-          <div className="flex w-full gap-6">
-            <CustomTextField
-              label="First Name"
-              {...getFieldProps("firstName")}
-              error={errors.firstName}
-              touched={touched.firstName}
-              type="text"
-              disabled={isSubmitting}
-              placeholder="John"
-            />
+        {isLoading ? (
+          <Loader variant="page" />
+        ) : (
+          <form
+            className="flex flex-col gap-y-0 mt-6 gap-2"
+            onSubmit={handleSubmit}
+          >
+            {/* First & Last name */}
+            <div className="flex w-full gap-6">
+              <CustomTextField
+                label="First Name"
+                {...getFieldProps("firstName")}
+                error={errors.firstName}
+                touched={touched.firstName}
+                type="text"
+                disabled={isSubmitting}
+                placeholder="John"
+              />
 
-            <CustomTextField
-              label="Last Name"
-              {...getFieldProps("lastName")}
-              error={errors.lastName}
-              touched={touched.lastName}
-              type="text"
-              disabled={isSubmitting}
-              placeholder="Doe"
-            />
-          </div>
+              <CustomTextField
+                label="Last Name"
+                {...getFieldProps("lastName")}
+                error={errors.lastName}
+                touched={touched.lastName}
+                type="text"
+                disabled={isSubmitting}
+                placeholder="Doe"
+              />
+            </div>
 
-          {/* Email and Number */}
-          <div className="flex w-full gap-6">
-            <CustomTextField
-              label="Phone Number"
-              {...getFieldProps("phoneNumber")}
-              error={errors.phoneNumber}
-              touched={touched.phoneNumber}
-              type="text"
-              disabled={isSubmitting}
-              placeholder="081xxxxxxxx"
-            />
-          </div>
-        </form>
+            {/* Email and Number */}
+            <div className="flex w-full gap-6">
+              <CustomTextField
+                label="Phone Number"
+                {...getFieldProps("phoneNumber")}
+                error={errors.phoneNumber}
+                touched={touched.phoneNumber}
+                type="text"
+                disabled={isSubmitting}
+                placeholder="081xxxxxxxx"
+              />
+            </div>
+          </form>
+        )}
 
         {/* Change password */}
         <Link
-          href={"/reset-password"}
+          href={"/account/reset-password"}
           className="text-sm underline font-light mt-6"
         >
           Change password?
@@ -141,12 +145,14 @@ const AccountDetailsPage = () => {
           label="Discard Changes"
           variant="outlined"
           onClick={discardChanges}
+          disabled={isLoading}
         />
 
         <CustomButton
           label="Save Changes"
           variant="filled"
           onClick={saveChanges}
+          disabled={isLoading}
         />
       </div>
     </div>

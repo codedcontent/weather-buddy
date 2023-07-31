@@ -19,13 +19,7 @@ export const GET = async (request: Request, { params }: ParamsProps) => {
   try {
     const user = await User.findById({ _id: id });
 
-    return NextResponse.json(
-      {
-        msg: "Success",
-        user,
-      },
-      { status: 200 }
-    );
+    return NextResponse.json(user, { status: 200 });
   } catch (error) {
     throw new Error(`Error doing that --- ${error}`);
   }
