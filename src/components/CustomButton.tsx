@@ -21,11 +21,10 @@ const CustomButton = ({
     <button
       className={buttonStyles}
       onClick={onClick}
-      disabled={loading}
       {...rest}
+      disabled={loading || rest.disabled}
     >
-      {loading && <Loader variant="action" />}
-      {label}
+      {loading ? <Loader variant="action" /> : label}
     </button>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import CustomTextField from "@/components/CustomTextField";
 import { AccountDetailFormProps } from "@/types/types";
@@ -14,10 +14,12 @@ import Loader from "@/components/Loader";
 const AccountDetailsPage = () => {
   const session = useSession();
 
-  // @ts-ignore
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const fetcher = (...args: any[]) =>
+    // @ts-ignore
+    fetch(...args).then((res) => res.json());
 
-  const { data, error, isLoading } = useSWR(
+  // SWR users fetch data
+  const { data, mutate, isLoading } = useSWR(
     //   @ts-ignore
     `/api/users/${session.data?.id}`,
     fetcher
@@ -42,6 +44,7 @@ const AccountDetailsPage = () => {
     getFieldProps,
     handleSubmit,
     setSubmitting,
+    resetForm,
   } = useFormik({
     initialValues: accountDetailsInitialInput,
     onSubmit: handleFormSummit,
@@ -51,15 +54,30 @@ const AccountDetailsPage = () => {
 
   // Discard values of the form
   const discardChanges = () => {
-    // Disable forms
-    setSubmitting(true);
+    // Reset formik forms back to their initial value
+    resetForm();
   };
 
   // Save changes of the form
-  const saveChanges = () => {
+  const saveChanges = async () => {
     // Disable forms
     setSubmitting(true);
-    console.log("Saving changes => ", values);
+
+    // @ts-ignore
+    await fetch(`/api/users/${session.data?.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phoneNumber: values.phoneNumber,
+      }),
+    });
+
+    // Enable forms
+    setSubmitting(false);
+
+    // Mutate the formik form to reflect changes
+    mutate();
   };
 
   return (
@@ -153,6 +171,7 @@ const AccountDetailsPage = () => {
           variant="filled"
           onClick={saveChanges}
           disabled={isLoading}
+          loading={isSubmitting}
         />
       </div>
     </div>
