@@ -6,6 +6,7 @@ import { MdDelete } from "react-icons/md";
 import { IoAddOutline } from "react-icons/io5";
 
 type WeatherAlertTimesProps = {
+  id: string | number;
   times: string[];
 };
 

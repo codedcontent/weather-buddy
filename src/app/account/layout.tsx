@@ -8,6 +8,7 @@ import UpgradePlanCard from "@/components/UpgradePlanCard";
 import AccountOptions from "@/components/accountOptions/AccountOptions";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
+import { WeatherAlertsProvider } from "@/context/WeatherAlertsProvider";
 
 type AccountLayoutProps = {
   children: React.ReactNode;
@@ -29,7 +30,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
     return <Loader variant="page" />;
 
   return (
-    <main className="w-screen h-screen bg-wb-bgColor text-white flex items-center">
+    <main className="w-screen h-screen bg-wb-bgColor text-white flex items-center overflow-hidden">
       {/* Quick info and actions view */}
       <div className="w-[30%] h-full px-8 py-16 flex flex-col justify-between items-start">
         <h1>Profile Card</h1>
@@ -50,6 +51,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
         </div>
       </div>
 
+      {/* Fixed Account Layout Section */}
       <section className="w-[70%] h-[90%] bg-wb-boardColor rounded-3xl mr-8">
         {/* Fixed Account Layout UI */}
         <div className="flex w-full h-full">
@@ -67,7 +69,11 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
             </div>
           </div>
 
-          <div className="w-1/2 py-8 relative">{children}</div>
+          <WeatherAlertsProvider>
+            <div className="w-1/2 py-8 relative h-full overflow-y-scroll">
+              {children}
+            </div>
+          </WeatherAlertsProvider>
         </div>
       </section>
     </main>

@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export type CustomTextFieldProps = {
   error: string | undefined;
   label: string;
@@ -32,3 +34,11 @@ export type AccountDetailFormProps = {
   email: string;
   phoneNumber: string;
 };
+
+export type WeatherAlertsProps = {
+  id: number | string;
+  location: string;
+  times: string[];
+}[];
+
+export type WeatherAlertTimes = "5:00AM" | "12:00AM" | "4:00PM" | "8:00PM";

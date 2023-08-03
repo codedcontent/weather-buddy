@@ -1,23 +1,30 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import NewWeatherAlert from "./newWeatherAlert/NewWeatherAlert";
+import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
 
 const WeatherAlerts = () => {
-  const weatherAlerts = [
-    {
-      id: 1,
-      location: "Indianapolis",
-      times: ["4pm", "5pm"],
-    },
-  ];
+  const { state, dispatch } = useContext(WeatherAlertsContext);
+
+  const addNewWeatherLocation = () => {
+    dispatch({
+      type: "ADD_NEW_LOCATION",
+      payload: {
+        id: state.length + 1,
+      },
+    });
+  };
 
   return (
     <div className="space-y-4">
-      {weatherAlerts.map((weatherAlert) => (
+      {state.map((weatherAlert) => (
         <NewWeatherAlert key={weatherAlert.id} {...weatherAlert} />
       ))}
 
-      <button className="flex gap-0.5 items-center border-b w-max cursor-pointer">
+      <button
+        className="flex gap-0.5 items-center border-b w-max cursor-pointer"
+        onClick={addNewWeatherLocation}
+      >
         <p className="text-sm font-light">Add new location</p>
 
         <IoAddOutline className="text-lg" />

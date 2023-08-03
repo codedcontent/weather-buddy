@@ -1,16 +1,16 @@
 "use client";
 
+import React from "react";
 import CustomButton from "@/components/CustomButton";
 import WeatherAlerts from "@/components/weatherAlerts/WeatherAlerts";
-import React from "react";
 
 const WeatherAlertsPage = () => {
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       {/* Page title */}
       <p className="text-xl font-semibold capitalize px-8">Weather Alerts</p>
 
-      {/* <-- --> */}
+      {/* <-- Border --> */}
       <div className="pl-8 my-6">
         <hr className="border-silver" />
       </div>
