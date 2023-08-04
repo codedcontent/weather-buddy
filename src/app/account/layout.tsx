@@ -27,7 +27,11 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   }, [router, status]);
 
   if (status === "loading" || status === "unauthenticated")
-    return <Loader variant="page" />;
+    return (
+      <div className="bg-wb-primary absolute h-screen w-screen text-white">
+        <Loader variant="page" />
+      </div>
+    );
 
   return (
     <main className="w-screen h-screen bg-wb-bgColor text-white flex items-center overflow-hidden">
@@ -70,7 +74,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
           </div>
 
           <WeatherAlertsProvider>
-            <div className="w-1/2 py-8 relative h-full overflow-y-scroll">
+            <div className="w-1/2 py-8 relative h-full overflow-y-auto">
               {children}
             </div>
           </WeatherAlertsProvider>
