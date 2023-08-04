@@ -41,4 +41,4 @@ export type WeatherAlertsProps = {
   times: string[];
 }[];
 
-export type WeatherAlertTimes = "5:00AM" | "12:00AM" | "4:00PM" | "8:00PM";
+export type WeatherAlertTimes = "5:00 AM" | "12:00 AM" | "4:00 PM" | "8:00 PM";

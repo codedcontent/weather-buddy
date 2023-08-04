@@ -51,7 +51,7 @@ const INITIAL_STATE = [
   {
     id: 1,
     location: "Indianapolis",
-    times: ["5:00AM", "4:00PM"],
+    times: ["5:00 AM", "4:00 PM"],
   },
 ];
 
@@ -77,16 +77,14 @@ const reducer = (state: StateType, action: ActionType) => {
 
     case "ADD_NEW_TIME":
       // Find the alert that is being updated
-      const weatherAlertBeingUpdated = state[action.payload.id];
+      const weatherAlertBeingUpdated = state[action.payload.id - 1];
 
       // Update the new time in the alert
       weatherAlertBeingUpdated?.times.push(action.payload.time);
 
       // THE NEW STATE MUST BE IN THE ORDER IT WAS CREATED IN
       // Find the index of the updated alert
-      const updatedAlertIndex = state.findIndex(
-        (data) => data.id === action.payload.id
-      );
+      const updatedAlertIndex = action.payload.id - 1;
 
       // Get the alerts before the updatedAlert
       const alertsBefore = state.slice(0, updatedAlertIndex);
@@ -99,7 +97,7 @@ const reducer = (state: StateType, action: ActionType) => {
 
     case "DELETE_TIME":
       // Find the alert that is being updated
-      const weatherAlertBeingUpdated_TIME = state[action.payload.id];
+      const weatherAlertBeingUpdated_TIME = state[action.payload.id - 1];
 
       // Find the index of the time to be removed
       const timeIndex = weatherAlertBeingUpdated_TIME.times.findIndex(
@@ -107,11 +105,11 @@ const reducer = (state: StateType, action: ActionType) => {
       );
 
       // Remove the payload time from the alert times
-      weatherAlertBeingUpdated_TIME.times.splice(timeIndex);
+      weatherAlertBeingUpdated_TIME.times.splice(timeIndex, 1);
 
       // THE NEW STATE MUST BE IN THE ORDER IT WAS CREATED IN
       // Find the index of the updated alert
-      const updatedAlertIndex_TIME = action.payload.id;
+      const updatedAlertIndex_TIME = action.payload.id - 1;
 
       // Get the alerts before the updatedAlert
       const alertsBefore_TIME = state.slice(0, updatedAlertIndex_TIME);
