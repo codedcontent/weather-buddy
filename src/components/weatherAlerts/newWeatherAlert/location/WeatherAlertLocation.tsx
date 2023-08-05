@@ -1,7 +1,7 @@
 "use client";
 
 import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { BsFillPatchQuestionFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import LocationSuggestions from "./LocationSuggestions";
@@ -16,6 +16,9 @@ const WeatherAlertLocationPicker = ({
   id,
 }: WeatherAlertLocationProps) => {
   const { dispatch } = useContext(WeatherAlertsContext);
+
+  // A reference to the element containing the location picker and suggestions elements
+  const locationPickerRef = useRef<HTMLDivElement>(null);
 
   // State mgt. fot the weather location input
   const [weatherAlertLocation, setWeatherAlertLocation] = useState(
@@ -56,7 +59,7 @@ const WeatherAlertLocationPicker = ({
       </div>
 
       {/* The main new location picker and location suggestion components */}
-      <div className="w-full">
+      <div className="w-full" ref={locationPickerRef}>
         {/* The textarea and delete button */}
         <div className="w-full flex flex-row justify-center items-center gap-1">
           <textarea
@@ -81,6 +84,7 @@ const WeatherAlertLocationPicker = ({
           <LocationSuggestions
             text={weatherAlertLocation}
             setShowSuggestions={setShowSuggestions}
+            refElement={locationPickerRef}
           />
         )}
       </div>

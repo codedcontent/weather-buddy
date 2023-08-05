@@ -6,7 +6,7 @@ import WeatherAlerts from "@/components/weatherAlerts/WeatherAlerts";
 
 const WeatherAlertsPage = () => {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full overflow-y-auto pb-2">
       {/* Page title */}
       <p className="text-xl font-semibold capitalize px-8">Weather Alerts</p>
 

@@ -14,12 +14,12 @@ const CustomButton = ({
     fullWidth ? "w-full" : "w-auto"
   } ${
     variant === "filled"
-      ? "bg-wb-primary transition-all duration-500 border border-wb-primary hover:bg-transparent disabled:bg-gray-500"
+      ? "bg-wb-primary transition-all border border-wb-primary hover:bg-transparent disabled:bg-gray-500"
       : "bg-transparent hover:border border-primary disabled:bg-gray-500"
   }`;
   return (
     <button
-      className={buttonStyles}
+      className={`${buttonStyles} duration-200`}
       onClick={onClick}
       {...rest}
       disabled={loading || rest.disabled}

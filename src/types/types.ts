@@ -42,3 +42,11 @@ export type WeatherAlertsProps = {
 }[];
 
 export type WeatherAlertTimes = "5:00 AM" | "12:00 AM" | "4:00 PM" | "8:00 PM";
+
+export type LocationSuggestions = {
+  title: string;
+  coord: {
+    lat: number;
+    long: number;
+  };
+};

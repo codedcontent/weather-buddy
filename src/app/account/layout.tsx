@@ -73,11 +73,9 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
             </div>
           </div>
 
-          <WeatherAlertsProvider>
-            <div className="w-1/2 py-8 relative h-full overflow-y-auto">
-              {children}
-            </div>
-          </WeatherAlertsProvider>
+          <div className="w-1/2 py-8 relative h-full overflow-hidden">
+            <WeatherAlertsProvider>{children}</WeatherAlertsProvider>
+          </div>
         </div>
       </section>
     </main>
