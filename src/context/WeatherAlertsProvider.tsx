@@ -1,12 +1,12 @@
 "use client";
 
-import { WeatherAlertTimes, WeatherAlertsProps } from "@/types/types";
+import { Location } from "@/types/types";
 import React, { createContext, useReducer } from "react";
 
 // The ts-type of our state in the reducer
 type StateType = {
   id: number;
-  location: string;
+  location: Location;
   times: string[];
 }[];
 
@@ -47,10 +47,13 @@ type ActionType =
   | DeleteLocationActionType
   | DeleteTimeActionType;
 
-const INITIAL_STATE = [
+const INITIAL_STATE: StateType = [
   {
     id: 1,
-    location: "Indianapolis",
+    location: {
+      title: "Indianapolis",
+      coord: { lat: 0, long: 0 },
+    },
     times: ["5:00 AM", "4:00 PM"],
   },
 ];
@@ -62,7 +65,10 @@ const reducer = (state: StateType, action: ActionType) => {
         ...state,
         {
           id: state.length + 1,
-          location: "",
+          location: {
+            title: "",
+            coord: { lat: 0, long: 0 },
+          },
           times: [""],
         },
       ];

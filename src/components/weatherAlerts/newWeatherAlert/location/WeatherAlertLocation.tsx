@@ -5,10 +5,11 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { BsFillPatchQuestionFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import LocationSuggestions from "./LocationSuggestions";
+import { Location } from "@/types/types";
 
 type WeatherAlertLocationProps = {
   id: number;
-  location: string;
+  location: Location;
 };
 
 const WeatherAlertLocationPicker = ({
@@ -21,9 +22,8 @@ const WeatherAlertLocationPicker = ({
   const locationPickerRef = useRef<HTMLDivElement>(null);
 
   // State mgt. fot the weather location input
-  const [weatherAlertLocation, setWeatherAlertLocation] = useState(
-    location ?? ""
-  );
+  const [weatherAlertLocation, setWeatherAlertLocation] =
+    useState<Location>(location);
 
   // State mgt. for if to show suggestions
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -40,7 +40,11 @@ const WeatherAlertLocationPicker = ({
   const handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
 
-    setWeatherAlertLocation(value);
+    // Set the new alert location - The alert location Object is of type Location
+    setWeatherAlertLocation({
+      coord: weatherAlertLocation.coord,
+      title: value,
+    });
   };
 
   // Handle input focus change
@@ -65,7 +69,7 @@ const WeatherAlertLocationPicker = ({
           <textarea
             className="border border-white bg-transparent rounded-xl pt-2.5 px-6 w-full font-light placeholder:text-neutral-500 text-xs flex-1"
             placeholder="Type any location"
-            value={weatherAlertLocation}
+            value={weatherAlertLocation?.title}
             onChange={handleOnChange}
             onFocus={handleFocus}
           ></textarea>
@@ -82,9 +86,10 @@ const WeatherAlertLocationPicker = ({
 
         {showSuggestions && (
           <LocationSuggestions
-            text={weatherAlertLocation}
+            text={weatherAlertLocation?.title}
             setShowSuggestions={setShowSuggestions}
             refElement={locationPickerRef}
+            setWeatherAlertLocation={setWeatherAlertLocation}
           />
         )}
       </div>

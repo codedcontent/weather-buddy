@@ -2,31 +2,34 @@
 
 import Loader from "@/components/Loader";
 import useClickAway from "@/hooks/useClickAway";
-import { LocationSuggestions } from "@/types/types";
-import React, { useEffect, useRef, useState } from "react";
+import { Location } from "@/types/types";
+import React, { useEffect, useState } from "react";
 
 type LocationSuggestionsProps = {
   text: string;
   refElement: React.RefObject<HTMLDivElement>;
   setShowSuggestions: React.Dispatch<React.SetStateAction<boolean>>;
+  setWeatherAlertLocation: React.Dispatch<React.SetStateAction<Location>>;
 };
 
 const LocationSuggestions = ({
   text,
   refElement,
   setShowSuggestions,
+  setWeatherAlertLocation,
 }: LocationSuggestionsProps) => {
   const [isSearching, setIsSearching] = useState(true);
-  const [suggestions, setSuggestions] = useState<LocationSuggestions[]>([]);
+  const [suggestions, setSuggestions] = useState<Location[]>([]);
 
   const handleClickAway = () => {
     setShowSuggestions(false);
     setIsSearching(false);
   };
 
-  const handleSuggestionClick = () => {
-    setIsSearching(false);
+  const handleSuggestionClick = (suggestion: Location) => {
     setShowSuggestions(false);
+
+    setWeatherAlertLocation(suggestion);
   };
 
   useClickAway(refElement, handleClickAway);
@@ -48,8 +51,6 @@ const LocationSuggestions = ({
           long: data.lon,
         },
       }));
-
-      console.log(suggestedLocations);
 
       // Finished getting suggestions
       setSuggestions(suggestedLocations);
@@ -78,8 +79,12 @@ const LocationSuggestions = ({
             </div>
           ) : (
             <div className="w-full space-y-2 divide-y-2">
-              {suggestions.map((suggestion: LocationSuggestions, index) => (
-                <div className="w-full" key={index}>
+              {suggestions.map((suggestion: Location, index) => (
+                <div
+                  className="w-full"
+                  key={index}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                >
                   <p className="font-extralight w-full hover:brightness-75 cursor-pointer text-sm pt-2 px-3">
                     {suggestion.title}
                   </p>

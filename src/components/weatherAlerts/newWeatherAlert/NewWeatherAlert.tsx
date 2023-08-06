@@ -1,10 +1,11 @@
 import React from "react";
 import WeatherAlertLocationPicker from "./location/WeatherAlertLocation";
 import WeatherAlertTimesPicker from "./time/WeatherAlertTimes";
+import { Location } from "@/types/types";
 
 type WeatherAlertProps = {
   id: number;
-  location: string;
+  location: Location;
   times: string[];
 };
 
