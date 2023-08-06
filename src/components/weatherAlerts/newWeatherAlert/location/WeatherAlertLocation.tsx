@@ -40,6 +40,8 @@ const WeatherAlertLocationPicker = ({
   const handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
 
+    setShowSuggestions(true);
+
     // Set the new alert location - The alert location Object is of type Location
     setWeatherAlertLocation({
       coord: weatherAlertLocation.coord,
@@ -49,7 +51,9 @@ const WeatherAlertLocationPicker = ({
 
   // Handle input focus change
   const handleFocus = () => {
-    setShowSuggestions(true);
+    if (weatherAlertLocation.title) {
+      setShowSuggestions(true);
+    }
   };
 
   return (

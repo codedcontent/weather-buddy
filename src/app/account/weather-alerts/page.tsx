@@ -1,10 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import CustomButton from "@/components/CustomButton";
 import WeatherAlerts from "@/components/weatherAlerts/WeatherAlerts";
+import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
 
 const WeatherAlertsPage = () => {
+  const { state } = useContext(WeatherAlertsContext);
+
+  const saveChanges = () => {
+    console.log(state);
+  };
+
   return (
     <div className="w-full h-full overflow-y-auto pb-2">
       {/* Page title */}
@@ -44,7 +51,7 @@ const WeatherAlertsPage = () => {
 
         <CustomButton
           label="Save Changes"
-          onClick={() => {}}
+          onClick={saveChanges}
           variant="filled"
         />
       </div>

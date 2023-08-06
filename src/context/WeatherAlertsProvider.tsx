@@ -69,7 +69,7 @@ const reducer = (state: StateType, action: ActionType) => {
             title: "",
             coord: { lat: 0, long: 0 },
           },
-          times: [""],
+          times: ["5:00 AM"],
         },
       ];
 

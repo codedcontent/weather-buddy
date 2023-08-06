@@ -2,11 +2,9 @@ import connectDB from "@/utils/db";
 import { NextResponse } from "next/server";
 
 export const GET = async (request: Request) => {
-  try {
-    await connectDB();
-  } catch (err) {
-    console.log(err);
-  }
+  await connectDB();
 
-  return new NextResponse("DB connected", { status: 200 });
+  return new NextResponse("OP. Completed.", { status: 200 });
+
+  // return new NextResponse(JSON.stringify(schemaPaths), { status: 200 });
 };
