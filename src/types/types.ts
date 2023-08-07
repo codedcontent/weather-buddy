@@ -44,7 +44,7 @@ export type Location = {
 };
 
 export type WeatherAlertsProps = {
-  id: number | string;
+  weatherAlertId: string;
   location: Location;
   times: string[];
 }[];

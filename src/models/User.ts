@@ -28,7 +28,22 @@ const userSchema = new mongoose.Schema(
     },
     weatherLocations: [
       {
-        location: String,
+        location: {
+          title: {
+            type: String,
+            required: true,
+          },
+          coord: {
+            lat: {
+              type: Number,
+              required: true,
+            },
+            long: {
+              type: Number,
+              required: true,
+            },
+          },
+        },
         times: [String],
       },
     ],

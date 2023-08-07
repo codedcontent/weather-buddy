@@ -18,8 +18,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   const { status } = useSession();
   const router = useRouter();
 
-  // console.log(useSession());
-
+  // Protect the route
   useEffect(() => {
     if (status === "unauthenticated") {
       router.replace("/login");

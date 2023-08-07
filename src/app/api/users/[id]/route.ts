@@ -55,6 +55,6 @@ export const PATCH = async (request: Request, { params }: ParamsProps) => {
 
     return new NextResponse("Update successful", { status: 200 });
   } catch (error) {
-    return new NextResponse(`An error occurred ${error}`, { status: 200 });
+    return new NextResponse(`An error occurred ${error}`, { status: 500 });
   }
 };

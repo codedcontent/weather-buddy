@@ -8,7 +8,7 @@ import LocationSuggestions from "./LocationSuggestions";
 import { Location } from "@/types/types";
 
 type WeatherAlertLocationProps = {
-  id: number;
+  id: string;
   location: Location;
 };
 
@@ -32,7 +32,7 @@ const WeatherAlertLocationPicker = ({
   const deleteWeatherAlert = () => {
     dispatch({
       type: "DELETE_LOCATION",
-      payload: { id },
+      payload: { weatherAlertId: id },
     });
   };
 
@@ -90,6 +90,7 @@ const WeatherAlertLocationPicker = ({
 
         {showSuggestions && (
           <LocationSuggestions
+            id={id}
             text={weatherAlertLocation?.title}
             setShowSuggestions={setShowSuggestions}
             refElement={locationPickerRef}

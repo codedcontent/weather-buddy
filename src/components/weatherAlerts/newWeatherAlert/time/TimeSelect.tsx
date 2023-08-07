@@ -3,7 +3,7 @@ import { WeatherAlertTimes } from "@/types/types";
 import React, { useContext } from "react";
 
 type Props = {
-  id: number;
+  id: string;
   times: string[];
   setSelectOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -22,7 +22,7 @@ const TimeSelect = ({ times, setSelectOpen, id }: Props) => {
     dispatch({
       type: "ADD_NEW_TIME",
       payload: {
-        id,
+        weatherAlertId: id,
         time,
       },
     });

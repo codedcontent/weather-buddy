@@ -1,11 +1,13 @@
 "use client";
+// TODO: REPLACE LOCATION_ID's WITH LOCATION_INDEX's
 
-import { Location } from "@/types/types";
+import { Location, WeatherAlertsProps } from "@/types/types";
 import React, { createContext, useReducer } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 // The ts-type of our state in the reducer
 type StateType = {
-  id: number;
+  weatherAlertId: string;
   location: Location;
   times: string[];
 }[];
@@ -14,21 +16,18 @@ type StateType = {
 type DeleteLocationActionType = {
   type: "DELETE_LOCATION";
   payload: {
-    id: number;
+    weatherAlertId: string;
   };
 };
 
 type AddLocationActionType = {
   type: "ADD_NEW_LOCATION";
-  payload: {
-    id: number;
-  };
 };
 
 type AddTimeActionType = {
   type: "ADD_NEW_TIME";
   payload: {
-    id: number;
+    weatherAlertId: string;
     time: string;
   };
 };
@@ -36,8 +35,23 @@ type AddTimeActionType = {
 type DeleteTimeActionType = {
   type: "DELETE_TIME";
   payload: {
-    id: number;
+    weatherAlertId: string;
     time: string;
+  };
+};
+
+type SetLocationsActionType = {
+  type: "SET_LOCATIONS";
+  payload: {
+    weatherAlerts: WeatherAlertsProps;
+  };
+};
+
+type UpdateLocationActionType = {
+  type: "UPDATE_LOCATION";
+  payload: {
+    weatherAlertId: string;
+    newLocation: Location;
   };
 };
 
@@ -45,26 +59,47 @@ type ActionType =
   | AddLocationActionType
   | AddTimeActionType
   | DeleteLocationActionType
-  | DeleteTimeActionType;
+  | DeleteTimeActionType
+  | SetLocationsActionType
+  | UpdateLocationActionType;
 
 const INITIAL_STATE: StateType = [
   {
-    id: 1,
+    weatherAlertId: uuidv4(),
     location: {
-      title: "Indianapolis",
+      title: "",
       coord: { lat: 0, long: 0 },
     },
-    times: ["5:00 AM", "4:00 PM"],
+    times: ["5:00 AM"],
   },
 ];
 
 const reducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
+    case "SET_LOCATIONS":
+      // Set the users alert locations
+
+      return action.payload.weatherAlerts;
+
+    // return {
+    //   ...action.payload.weatherAlerts,
+    // };
+
+    case "UPDATE_LOCATION":
+      const locationIndexToUpdate = state.findIndex(
+        (data) => data.weatherAlertId === action.payload.weatherAlertId
+      );
+
+      // Update the location
+      state[locationIndexToUpdate].location = action.payload.newLocation;
+
+      return state;
+
     case "ADD_NEW_LOCATION":
       return [
         ...state,
         {
-          id: state.length + 1,
+          weatherAlertId: uuidv4(),
           location: {
             title: "",
             coord: { lat: 0, long: 0 },
@@ -76,34 +111,42 @@ const reducer = (state: StateType, action: ActionType) => {
     case "DELETE_LOCATION":
       // Remove the payload location from the list of alerts
       const filteredAlerts = state.filter(
-        (alert) => alert.id !== action.payload.id
+        (alert) => alert.weatherAlertId !== action.payload.weatherAlertId
       );
 
       return filteredAlerts;
 
     case "ADD_NEW_TIME":
+      // Find the index of the updated alert
+      const weatherAlertBeingUpdatedIndex_ADD = state.findIndex(
+        (alert) => alert.weatherAlertId === action.payload.weatherAlertId
+      );
+
       // Find the alert that is being updated
-      const weatherAlertBeingUpdated = state[action.payload.id - 1];
+      const weatherAlertBeingUpdated = state[weatherAlertBeingUpdatedIndex_ADD];
 
       // Update the new time in the alert
       weatherAlertBeingUpdated?.times.push(action.payload.time);
 
       // THE NEW STATE MUST BE IN THE ORDER IT WAS CREATED IN
-      // Find the index of the updated alert
-      const updatedAlertIndex = action.payload.id - 1;
-
       // Get the alerts before the updatedAlert
-      const alertsBefore = state.slice(0, updatedAlertIndex);
+      const alertsBefore = state.slice(0, weatherAlertBeingUpdatedIndex_ADD);
 
       // Get the alerts after the updatedAlert
-      const alertsAfter = state.slice(updatedAlertIndex + 1);
+      const alertsAfter = state.slice(weatherAlertBeingUpdatedIndex_ADD);
 
       // Update the state
       return [...alertsBefore, weatherAlertBeingUpdated, ...alertsAfter];
 
     case "DELETE_TIME":
+      // Find the index of the updated alert
+      const weatherAlertBeingUpdatedIndex_DELETE = state.findIndex(
+        (alert) => alert.weatherAlertId === action.payload.weatherAlertId
+      );
+
       // Find the alert that is being updated
-      const weatherAlertBeingUpdated_TIME = state[action.payload.id - 1];
+      const weatherAlertBeingUpdated_TIME =
+        state[weatherAlertBeingUpdatedIndex_DELETE];
 
       // Find the index of the time to be removed
       const timeIndex = weatherAlertBeingUpdated_TIME.times.findIndex(
@@ -115,7 +158,7 @@ const reducer = (state: StateType, action: ActionType) => {
 
       // THE NEW STATE MUST BE IN THE ORDER IT WAS CREATED IN
       // Find the index of the updated alert
-      const updatedAlertIndex_TIME = action.payload.id - 1;
+      const updatedAlertIndex_TIME = weatherAlertBeingUpdatedIndex_DELETE;
 
       // Get the alerts before the updatedAlert
       const alertsBefore_TIME = state.slice(0, updatedAlertIndex_TIME);

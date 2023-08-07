@@ -10,7 +10,7 @@ import TimeSelect from "./TimeSelect";
 import useClickAway from "@/hooks/useClickAway";
 
 type WeatherAlertTimesProps = {
-  id: number;
+  id: string;
   times: string[];
 };
 
@@ -26,7 +26,7 @@ const WeatherAlertTimesPicker = ({ times, id }: WeatherAlertTimesProps) => {
     dispatch({
       type: "DELETE_TIME",
       payload: {
-        id,
+        weatherAlertId: id,
         time,
       },
     });

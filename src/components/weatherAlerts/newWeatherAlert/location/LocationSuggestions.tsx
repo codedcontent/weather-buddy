@@ -1,11 +1,13 @@
 "use client";
 
 import Loader from "@/components/Loader";
+import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
 import useClickAway from "@/hooks/useClickAway";
 import { Location } from "@/types/types";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 type LocationSuggestionsProps = {
+  id: string;
   text: string;
   refElement: React.RefObject<HTMLDivElement>;
   setShowSuggestions: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +15,7 @@ type LocationSuggestionsProps = {
 };
 
 const LocationSuggestions = ({
+  id,
   text,
   refElement,
   setShowSuggestions,
@@ -20,6 +23,7 @@ const LocationSuggestions = ({
 }: LocationSuggestionsProps) => {
   const [isSearching, setIsSearching] = useState(true);
   const [suggestions, setSuggestions] = useState<Location[]>([]);
+  const { dispatch } = useContext(WeatherAlertsContext);
 
   const handleClickAway = () => {
     setShowSuggestions(false);
@@ -28,6 +32,15 @@ const LocationSuggestions = ({
 
   const handleSuggestionClick = (suggestion: Location) => {
     setShowSuggestions(false);
+
+    // Since the user clicked on a suggestion, update the location for that weather alert
+    dispatch({
+      type: "UPDATE_LOCATION",
+      payload: {
+        weatherAlertId: id,
+        newLocation: suggestion,
+      },
+    });
 
     setWeatherAlertLocation(suggestion);
   };
