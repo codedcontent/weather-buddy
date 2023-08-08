@@ -38,7 +38,7 @@ const AccountOption: React.FC<AccountOptionProps> = ({
       >
         {accountOptionIcon}
 
-        <div className="w-full border-b border-b-silver flex-1 ml-4 pb-3">
+        <div className="w-full border-b border-wb-silver flex-1 ml-4 pb-3">
           <div className="w-[80%] flex items-start">
             <div className="mr-1 flex-1 text-neutral-400">
               <p className="font-medium text-lg capitalize">{title}</p>

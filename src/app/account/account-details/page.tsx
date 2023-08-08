@@ -86,7 +86,7 @@ const AccountDetailsPage = () => {
       <p className="text-xl font-semibold capitalize px-8">Account details</p>
 
       <div className="pl-8 my-6">
-        <hr className="border-silver" />
+        <hr className="border-wb-silver" />
       </div>
 
       {/* Page description */}
@@ -154,7 +154,7 @@ const AccountDetailsPage = () => {
       </div>
 
       <div className="pl-8 mt-14 mb-6">
-        <hr className="border-silver" />
+        <hr className="border-wb-silver" />
       </div>
 
       {/* Save/Discard buttons */}
