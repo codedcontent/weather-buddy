@@ -10,6 +10,8 @@ import { WeatherAlertsProps } from "@/types/types";
 const WeatherAlertsPage = () => {
   const { state, dispatch } = useContext(WeatherAlertsContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [initialAlerts_TEMP, setInitialAlerts_TEMP] =
+    useState<WeatherAlertsProps | null>(null);
 
   const session = useSession();
 
@@ -28,6 +30,23 @@ const WeatherAlertsPage = () => {
     console.log(data);
 
     setIsLoading(false);
+  };
+
+  // Reset the users changes
+  const discardChanges = () => {
+    // Ensure changes have been made
+    if (initialAlerts_TEMP) {
+      // Reset the state
+      dispatch({
+        type: "SET_ALERTS",
+        payload: {
+          weatherAlerts: initialAlerts_TEMP,
+        },
+      });
+
+      // Clear the users initially loaded temporary alerts
+      setInitialAlerts_TEMP(null);
+    }
   };
 
   // Set the users locations
@@ -50,11 +69,16 @@ const WeatherAlertsPage = () => {
       }
     };
 
+    // Set the users fetched weather alerts
     const setUserWeatherAlerts = async () => {
       const userAlerts = await getWeatherAlerts();
 
+      // Store the users initially loaded alerts temporarily
+      setInitialAlerts_TEMP(await getWeatherAlerts());
+
+      // Set the users alerts
       dispatch({
-        type: "SET_LOCATIONS",
+        type: "SET_ALERTS",
         payload: {
           weatherAlerts: userAlerts,
         },
@@ -62,7 +86,7 @@ const WeatherAlertsPage = () => {
     };
 
     setUserWeatherAlerts();
-  }, [dispatch, session?.data]);
+  }, []);
 
   return (
     <div className="w-full h-full overflow-y-auto pb-2">
@@ -97,7 +121,7 @@ const WeatherAlertsPage = () => {
       <div className="flex w-full gap-4 px-8">
         <CustomButton
           label="Discard Changes"
-          onClick={() => {}}
+          onClick={discardChanges}
           variant="outlined"
           loading={isLoading}
         />

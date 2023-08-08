@@ -41,7 +41,7 @@ type DeleteTimeActionType = {
 };
 
 type SetLocationsActionType = {
-  type: "SET_LOCATIONS";
+  type: "SET_ALERTS";
   payload: {
     weatherAlerts: WeatherAlertsProps;
   };
@@ -76,14 +76,9 @@ const INITIAL_STATE: StateType = [
 
 const reducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
-    case "SET_LOCATIONS":
+    case "SET_ALERTS":
       // Set the users alert locations
-
       return action.payload.weatherAlerts;
-
-    // return {
-    //   ...action.payload.weatherAlerts,
-    // };
 
     case "UPDATE_LOCATION":
       const locationIndexToUpdate = state.findIndex(
@@ -128,15 +123,8 @@ const reducer = (state: StateType, action: ActionType) => {
       // Update the new time in the alert
       weatherAlertBeingUpdated?.times.push(action.payload.time);
 
-      // THE NEW STATE MUST BE IN THE ORDER IT WAS CREATED IN
-      // Get the alerts before the updatedAlert
-      const alertsBefore = state.slice(0, weatherAlertBeingUpdatedIndex_ADD);
-
-      // Get the alerts after the updatedAlert
-      const alertsAfter = state.slice(weatherAlertBeingUpdatedIndex_ADD);
-
       // Update the state
-      return [...alertsBefore, weatherAlertBeingUpdated, ...alertsAfter];
+      return state;
 
     case "DELETE_TIME":
       // Find the index of the updated alert
