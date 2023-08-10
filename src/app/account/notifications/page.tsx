@@ -2,35 +2,79 @@
 
 import CustomButton from "@/components/CustomButton";
 import CustomCheckbox from "@/components/CustomCheckbox";
-import React from "react";
+import Loader from "@/components/Loader";
+import mapUserNotifications from "@/utils/mapUserNotifications";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
 type NotificationType = {
   sms: boolean;
   email: boolean;
   whatsApp: boolean;
-  push: boolean;
+  pushNotifications: boolean;
 };
 
 const NotificationsPage = () => {
-  // Implement the notification setting function
-  const getUserNotifications = async () => {
-    return await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          sms: false,
-          email: false,
-          whatsApp: false,
-          push: false,
-        });
-      }, 2000);
-    });
+  const [notifications, setNotifications] = useState<NotificationType | null>(
+    null
+  );
+
+  // User session
+  const session = useSession();
+
+  // Get the users notifications
+  useEffect(() => {
+    const getUserNotifications = async () => {
+      // @ts-ignore
+      const url = `/api/notifications/${session.data?.id}`;
+      const resp = await fetch(url, { method: "GET" });
+      const data = await resp.json();
+
+      const userNotifications = mapUserNotifications(data.notifications);
+
+      setNotifications(userNotifications);
+    };
+
+    getUserNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    name: string
+  ) => {
+    const isChecked = e.target.checked;
+
+    setNotifications((prev) => ({
+      ...(prev as NotificationType),
+      [name]: isChecked,
+    }));
   };
 
-  const handleSubmit = () => {};
+  const saveChanges = async () => {
+    // @ts-ignore
+    const url = `/api/notifications/${session.data?.id}`;
+    const resp = await fetch(url, {
+      method: "PATCH",
+      body: JSON.stringify({ notifications }),
+    });
+    const data = await resp.json();
 
-  const saveChanges = () => {};
+    const userNotifications = mapUserNotifications(data.notifications);
 
-  const discardChanges = () => {};
+    setNotifications(userNotifications);
+  };
+
+  const discardChanges = async () => {
+    // @ts-ignore
+    const url = `/api/notifications/${session.data?.id}`;
+    const resp = await fetch(url, { method: "GET" });
+    const data = await resp.json();
+
+    const userNotifications = mapUserNotifications(data.notifications);
+
+    setNotifications(userNotifications);
+  };
 
   return (
     <div className="w-full">
@@ -51,12 +95,45 @@ const NotificationsPage = () => {
       </div>
 
       {/* Updatable notification preferences */}
-      <div className="px-8 mt-8 grid grid-cols-2 gap-y-4">
-        <CustomCheckbox label="SMS alerts" />
-        <CustomCheckbox label="Email alerts" />
-        <CustomCheckbox label="WhatsApp alerts" />
-        <CustomCheckbox label="Push notifications" />
-      </div>
+      {!notifications ? (
+        <div className="w-full grid place-items-center h-32">
+          <Loader variant="action" />
+        </div>
+      ) : (
+        <div className="px-8 mt-8 grid grid-cols-2 gap-y-4">
+          <CustomCheckbox
+            label="Email alerts"
+            checked={notifications?.email}
+            onChange={(e) => {
+              handleChange(e, "email");
+            }}
+          />
+
+          <CustomCheckbox
+            label="SMS alerts"
+            checked={notifications?.sms}
+            onChange={(e) => {
+              handleChange(e, "sms");
+            }}
+          />
+
+          <CustomCheckbox
+            label="WhatsApp alerts"
+            checked={notifications?.whatsApp}
+            onChange={(e) => {
+              handleChange(e, "whatsApp");
+            }}
+          />
+
+          <CustomCheckbox
+            label="Push notifications"
+            checked={notifications?.pushNotifications}
+            onChange={(e) => {
+              handleChange(e, "pushNotifications");
+            }}
+          />
+        </div>
+      )}
 
       {/* <-- --> */}
       <div className="pl-8 mt-14 mb-6">
