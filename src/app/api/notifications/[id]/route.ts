@@ -24,7 +24,7 @@ export const GET = async (request: Request, { params }: Params) => {
         JSON.stringify({
           msg: "No such user exist.",
         }),
-        { status: httpStatusCodes.NOT_FFORBIDDENOUND }
+        { status: httpStatusCodes.FORBIDDEN }
       );
     }
 
