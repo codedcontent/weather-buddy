@@ -18,21 +18,31 @@ const NotificationsPage = () => {
   const [notifications, setNotifications] = useState<NotificationType | null>(
     null
   );
+  const [disabled, setDisabled] = useState(false);
 
   // User session
   const session = useSession();
 
   // Get the users notifications
   useEffect(() => {
+    // Disable buttons
+    setDisabled(true);
+
     const getUserNotifications = async () => {
       // @ts-ignore
       const url = `/api/notifications/${session.data?.id}`;
-      const resp = await fetch(url, { method: "GET" });
-      const data = await resp.json();
 
-      const userNotifications = mapUserNotifications(data.notifications);
+      try {
+        const resp = await fetch(url, { method: "GET" });
+        const data = await resp.json();
 
-      setNotifications(userNotifications);
+        const userNotifications = mapUserNotifications(data.notifications);
+
+        setNotifications(userNotifications);
+        setDisabled(false);
+      } catch (error) {
+        throw new Error(`An error occurred: => ${error}`);
+      }
     };
 
     getUserNotifications();
@@ -52,17 +62,25 @@ const NotificationsPage = () => {
   };
 
   const saveChanges = async () => {
-    // @ts-ignore
-    const url = `/api/notifications/${session.data?.id}`;
-    const resp = await fetch(url, {
-      method: "PATCH",
-      body: JSON.stringify({ notifications }),
-    });
-    const data = await resp.json();
+    // Disable buttons
+    setDisabled(true);
 
-    const userNotifications = mapUserNotifications(data.notifications);
+    try {
+      // @ts-ignore
+      const url = `/api/notifications/${session.data?.id}`;
+      const resp = await fetch(url, {
+        method: "PATCH",
+        body: JSON.stringify({ notifications }),
+      });
 
-    setNotifications(userNotifications);
+      const data = await resp.json();
+      console.log(data);
+    } catch (error) {
+      throw new Error(`An error occurred: => ${error}`);
+    }
+
+    // Enable buttons
+    setDisabled(false);
   };
 
   const discardChanges = async () => {
@@ -146,12 +164,14 @@ const NotificationsPage = () => {
           label="Discard Changes"
           onClick={discardChanges}
           variant="outlined"
+          disabled={disabled}
         />
 
         <CustomButton
           label="Save Changes"
           onClick={saveChanges}
           variant="filled"
+          disabled={disabled}
         />
       </div>
     </div>

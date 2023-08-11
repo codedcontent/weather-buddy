@@ -1,9 +1,4 @@
-type NotificationsType = {
-  email: { enabled?: boolean; frequency?: string };
-  sms: { enabled?: boolean; frequency?: string };
-  whatsApp: { enabled?: boolean; frequency?: string };
-  pushNotifications: { enabled?: boolean; frequency?: string };
-};
+import { NotificationsType } from "@/types/types";
 
 const mapUserNotifications = (data: NotificationsType) => {
   const userNotification: any = {};
