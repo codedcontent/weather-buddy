@@ -1,32 +1,48 @@
 import React from "react";
 import AccountOption from "./AccountOption";
+import { usePathname } from "next/navigation";
+
+const navLinks = [
+  {
+    name: "Account Details",
+    href: "/account/account-details",
+    subtitle: "Update personal information",
+  },
+  {
+    name: "Weather Alerts",
+    href: "/account/weather-alerts",
+    subtitle: "Update your weather alerts",
+  },
+  {
+    name: "Subscription Plan",
+    href: "/account/subscription-plan",
+    subtitle: "Manage your subscription plan",
+  },
+  {
+    name: "Notifications",
+    href: "/account/notifications",
+    subtitle: "Configure notification preferences",
+  },
+];
 
 const AccountOptions = () => {
+  const pathname = usePathname();
+
   return (
     <div className="space-y-6">
-      <AccountOption
-        title="account details"
-        href="/account-details"
-        subtitle="Personal information, Email"
-      />
+      {navLinks.map((link, index) => {
+        const isActive = pathname === link.href;
 
-      <AccountOption
-        title="weather alerts"
-        href="/weather-alerts"
-        subtitle="Personal information, Email"
-      />
-
-      <AccountOption
-        title="notifications"
-        href="/notifications"
-        subtitle="Personal information, Email"
-      />
-
-      <AccountOption
-        title="subscription plan"
-        href="/subscription-plan"
-        subtitle="Personal information, Email"
-      />
+        return (
+          <AccountOption
+            key={index}
+            title={link.name}
+            href={link.href}
+            subtitle={link.subtitle}
+            isActive={isActive}
+          />
+        );
+      })}
     </div>
   );
 };

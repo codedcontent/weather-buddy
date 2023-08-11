@@ -10,12 +10,14 @@ type AccountOptionProps = {
   title: string;
   subtitle: string;
   href: string;
+  isActive: boolean;
 };
 
 const AccountOption: React.FC<AccountOptionProps> = ({
   title,
   subtitle,
   href,
+  isActive,
 }) => {
   const iconStyle = `text-3xl text-neutral-400`;
 
@@ -33,14 +35,20 @@ const AccountOption: React.FC<AccountOptionProps> = ({
   return (
     <div className="w-full">
       <Link
-        href={`/account/${href}`}
-        className="flex items-start w-full text-neutral-400"
+        href={href}
+        className={`flex items-start w-full ${
+          isActive ? "text-white" : "text-neutral-400"
+        } hover:brightness-125`}
       >
         {accountOptionIcon}
 
         <div className="w-full border-b border-wb-silver flex-1 ml-4 pb-3">
           <div className="w-[80%] flex items-start">
-            <div className="mr-1 flex-1 text-neutral-400">
+            <div
+              className={`mr-1 ${
+                isActive ? "text-white" : "text-neutral-400"
+              } hover:brightness-125 w-full`}
+            >
               <p className="font-medium text-lg capitalize">{title}</p>
 
               <p className="font-extralight">{subtitle}</p>
