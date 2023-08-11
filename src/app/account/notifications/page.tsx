@@ -65,6 +65,8 @@ const NotificationsPage = () => {
     // Disable buttons
     setDisabled(true);
 
+    console.log(notifications);
+
     try {
       // @ts-ignore
       const url = `/api/notifications/${session.data?.id}`;

@@ -69,16 +69,16 @@ export const PATCH = async (request: Request, { params }: Params) => {
     console.log(userNotifications);
 
     // Update the users notification preferences
-    if (userNotifications.email)
-      foundUser.notificationSettings.email.enabled = userNotifications.email;
-    if (userNotifications.pushNotifications)
-      foundUser.notificationSettings.pushNotifications.enabled =
-        userNotifications.pushNotifications;
-    if (userNotifications.sms)
-      foundUser.notificationSettings.sms.enabled = userNotifications.sms;
-    if (userNotifications.whatsApp)
-      foundUser.notificationSettings.whatsApp.enabled =
-        userNotifications.whatsApp;
+    // Emails
+    foundUser.notificationSettings.email.enabled = userNotifications.email;
+    // Push notifications
+    foundUser.notificationSettings.pushNotifications.enabled =
+      userNotifications.pushNotifications;
+    // SMS
+    foundUser.notificationSettings.sms.enabled = userNotifications.sms;
+    // WhatsApp
+    foundUser.notificationSettings.whatsApp.enabled =
+      userNotifications.whatsApp;
 
     // Save the changes to the user
     await foundUser.save();

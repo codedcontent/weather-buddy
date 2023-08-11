@@ -14,14 +14,14 @@ const navLinks = [
     subtitle: "Update your weather alerts",
   },
   {
-    name: "Subscription Plan",
-    href: "/account/subscription-plan",
-    subtitle: "Manage your subscription plan",
-  },
-  {
     name: "Notifications",
     href: "/account/notifications",
     subtitle: "Configure notification preferences",
+  },
+  {
+    name: "Subscription Plan",
+    href: "/account/subscription-plan",
+    subtitle: "Manage your subscription plan",
   },
 ];
 
