@@ -85,6 +85,7 @@ const AccountDetailsPage = () => {
       {/* Page title */}
       <p className="text-xl font-semibold capitalize px-8">Account details</p>
 
+      {/* Horizontal line */}
       <div className="pl-8 my-6">
         <hr className="border-wb-silver" />
       </div>

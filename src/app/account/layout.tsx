@@ -1,4 +1,5 @@
 "use client";
+// TODO: LOAD THE USER DATA WHEN THIS PAGE LOADS
 
 import React, { useEffect } from "react";
 import Link from "next/link";

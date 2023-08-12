@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export type CustomTextFieldProps = {
   error: string | undefined;
   label: string;
@@ -56,4 +54,22 @@ export type NotificationsType = {
   sms: { enabled?: boolean; frequency?: string };
   whatsApp: { enabled?: boolean; frequency?: string };
   pushNotifications: { enabled?: boolean; frequency?: string };
+};
+
+export type TSubscriptionPlans = "free" | "standard" | "premium";
+
+export type TUserState = {
+  id: string;
+  accountDetails: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+  };
+  weatherAlerts: WeatherAlertsProps;
+  notifications: NotificationsType;
+  subscriptionDetails: {
+    plan: TSubscriptionPlans;
+    expDate: Date;
+  };
 };
