@@ -1,6 +1,6 @@
-import { Location, WeatherAlertTimes, WeatherAlertsProps } from "@/types/types";
+import { Location, WeatherAlertTimes, TWeatherAlerts } from "@/types/types";
 
-const getValidWeatherAlerts = (weatherAlerts: WeatherAlertsProps) => {
+const getValidWeatherAlerts = (weatherAlerts: TWeatherAlerts) => {
   // Empty list of weather alerts
   const validAlerts: {
     location: Location;

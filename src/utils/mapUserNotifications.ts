@@ -1,6 +1,6 @@
-import { NotificationsType } from "@/types/types";
+import { TNotifications } from "@/types/types";
 
-const mapUserNotifications = (data: NotificationsType) => {
+const mapUserNotifications = (data: TNotifications) => {
   const userNotification: any = {};
 
   const entries = Object.entries(data);

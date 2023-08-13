@@ -3,33 +3,34 @@
 import React, { useContext, useEffect, useState } from "react";
 import CustomButton from "@/components/CustomButton";
 import WeatherAlerts from "@/components/weatherAlerts/WeatherAlerts";
-import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
-import { useSession } from "next-auth/react";
-import { WeatherAlertsProps } from "@/types/types";
+import { TWeatherAlerts } from "@/types/types";
+import { UserContext } from "@/context/UserProvider";
+import ErrorOutError from "@/utils/errorOutError";
 
 const WeatherAlertsPage = () => {
-  const { state, dispatch } = useContext(WeatherAlertsContext);
+  const {
+    user: { weatherAlerts, id },
+    dispatch,
+  } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [initialAlerts_TEMP, setInitialAlerts_TEMP] =
-    useState<WeatherAlertsProps | null>(null);
-
-  const session = useSession();
+    useState<TWeatherAlerts | null>(null);
 
   const saveChanges = async () => {
     setIsLoading(true);
 
-    // @ts-ignore
-    const saveResp = await fetch(`/api/alerts/${session.data?.id}`, {
-      method: "PUT",
-      body: JSON.stringify(state),
-    });
-
-    const data = await saveResp.json();
-
-    // TODO: Add Toast Notification here
-    console.log(data);
-
-    setIsLoading(false);
+    // Update the users weather alerts
+    try {
+      // @ts-ignore
+      await fetch(`/api/users/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ weatherAlerts }),
+      });
+    } catch (error) {
+      ErrorOutError(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Reset the users changes
@@ -38,7 +39,7 @@ const WeatherAlertsPage = () => {
     if (initialAlerts_TEMP) {
       // Reset the state
       dispatch({
-        type: "SET_ALERTS",
+        type: "UPDATE_WEATHER_ALERTS",
         payload: {
           weatherAlerts: initialAlerts_TEMP,
         },
@@ -49,43 +50,18 @@ const WeatherAlertsPage = () => {
     }
   };
 
-  // Set the users locations
+  // Set the users weather alerts
   useEffect(() => {
-    // @ts-ignore
-    const userId = session?.data.id;
-
-    // Get the users weather alerts
-    const getWeatherAlerts = async (): Promise<WeatherAlertsProps> => {
-      const url = `/api/alerts/${userId}`;
-
-      try {
-        const resp = await fetch(url, { method: "GET" });
-
-        const data: WeatherAlertsProps = await resp.json();
-
-        return data;
-      } catch (error) {
-        throw new Error("An error occurred => ${error");
-      }
-    };
-
     // Set the users fetched weather alerts
-    const setUserWeatherAlerts = async () => {
-      const userAlerts = await getWeatherAlerts();
+    const setInitialUserWeatherAlerts = async () => {
+      const userAlerts = weatherAlerts;
 
-      // Store the users initially loaded alerts temporarily
-      setInitialAlerts_TEMP(await getWeatherAlerts());
-
-      // Set the users alerts
-      dispatch({
-        type: "SET_ALERTS",
-        payload: {
-          weatherAlerts: userAlerts,
-        },
-      });
+      // Store the users initially loaded alerts temporarily in order to discard changes if necessary
+      setInitialAlerts_TEMP(userAlerts);
     };
 
-    setUserWeatherAlerts();
+    setInitialUserWeatherAlerts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -109,7 +85,7 @@ const WeatherAlertsPage = () => {
 
       {/* Updatable weather locations and alert times */}
       <div className="px-8 mt-6">
-        <WeatherAlerts weatherAlerts={state} />
+        <WeatherAlerts weatherAlerts={weatherAlerts} />
       </div>
 
       {/* <-- --> */}

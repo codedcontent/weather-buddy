@@ -1,3 +1,7 @@
+"use client";
+
+// TODO: Add Toast Notifications
+
 import AuthProvider from "@/context/AuthProvider";
 import "./globals.css";
 import type { Metadata } from "next";

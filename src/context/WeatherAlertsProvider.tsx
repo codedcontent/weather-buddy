@@ -1,7 +1,7 @@
 "use client";
 // TODO: REPLACE LOCATION_ID's WITH LOCATION_INDEX's
 
-import { Location, WeatherAlertsProps } from "@/types/types";
+import { Location, TWeatherAlerts } from "@/types/types";
 import React, { createContext, useReducer } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -43,7 +43,7 @@ type DeleteTimeActionType = {
 type SetLocationsActionType = {
   type: "SET_ALERTS";
   payload: {
-    weatherAlerts: WeatherAlertsProps;
+    weatherAlerts: TWeatherAlerts;
   };
 };
 

@@ -1,7 +1,6 @@
 "use client";
-// TODO: LOAD THE USER DATA WHEN THIS PAGE LOADS
 
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import CustomButton from "@/components/CustomButton";
@@ -10,23 +9,53 @@ import AccountOptions from "@/components/accountOptions/AccountOptions";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 import { WeatherAlertsProvider } from "@/context/WeatherAlertsProvider";
+import { UserContext } from "@/context/UserProvider";
 
 type AccountLayoutProps = {
   children: React.ReactNode;
 };
 
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
-  const { status } = useSession();
+  const session = useSession();
   const router = useRouter();
+  const { dispatch } = useContext(UserContext);
 
-  // Protect the route
+  // Protect the account route
+  // TODO: Replace this with a middleware instead
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (session.status === "unauthenticated") {
       router.replace("/login");
     }
-  }, [router, status]);
+  }, [router, session.status]);
 
-  if (status === "loading" || status === "unauthenticated")
+  // Load the user details
+  useEffect(() => {
+    const getUserData = async () => {
+      const url =
+        // @ts-ignore
+        `/api/users/${session.data?.id}`;
+
+      const data = await fetch(url);
+      const userData = await data.json();
+
+      dispatch({
+        type: "SET_USER",
+        payload: {
+          user: {
+            // @ts-ignore
+            id: session.data?.id,
+            ...userData,
+          },
+        },
+      });
+    };
+
+    if (session.data) {
+      getUserData();
+    }
+  }, [dispatch, session.data]);
+
+  if (session.status === "loading" || session.status === "unauthenticated")
     return (
       <div className="bg-wb-primary absolute h-screen w-screen text-white">
         <Loader variant="page" />

@@ -59,7 +59,7 @@ const subscriptions = [
 
 const SubscriptionPlans = () => {
   const session = useSession();
-  const { state, dispatch } = useContext(UserContext);
+  const { user: state, dispatch } = useContext(UserContext);
 
   //   const fetcher = (...args: any[]) =>
   //     // @ts-ignore

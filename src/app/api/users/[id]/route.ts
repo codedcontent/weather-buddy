@@ -1,4 +1,10 @@
 import User from "@/models/User";
+import {
+  TNotifications,
+  TAccountDetails,
+  TSubscriptionDetails,
+  TWeatherAlerts,
+} from "@/types/types";
 import connectDB from "@/utils/db";
 import { NextResponse } from "next/server";
 
@@ -18,7 +24,22 @@ export const GET = async (request: Request, { params }: ParamsProps) => {
   try {
     const user = await User.findById(id);
 
-    return NextResponse.json(user, { status: 200 });
+    const userData = {
+      accountDetails: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+      },
+      weatherAlerts: user.weatherLocations,
+      notifications: user.notificationSettings,
+      subscriptionDetails: {
+        plan: user.subscriptionPlan,
+        expDate: user.subscriptionExpiryDate,
+      },
+    };
+
+    return NextResponse.json(userData, { status: 200 });
   } catch (error) {
     throw new Error(`Error doing that --- ${error}`);
   }
@@ -30,7 +51,16 @@ export const PATCH = async (request: Request, { params }: ParamsProps) => {
   const { id } = params;
 
   // Destructure account details to update
-  const { firstName, lastName, phoneNumber } = await request.json();
+  // const { firstName, lastName, phoneNumber } = await request.json();
+
+  const data: {
+    accountDetails?: TAccountDetails;
+    weatherAlerts?: TWeatherAlerts;
+    notifications?: TNotifications;
+    subscriptionDetails?: TSubscriptionDetails;
+  } = await request.json();
+
+  console.log(data);
 
   // Connect to DB
   await connectDB();
@@ -45,10 +75,34 @@ export const PATCH = async (request: Request, { params }: ParamsProps) => {
       });
     }
 
-    // Update the necessary user properties
-    if (firstName) foundUser.firstName = firstName;
-    if (lastName) foundUser.lastName = lastName;
-    if (phoneNumber) foundUser.phoneNumber = phoneNumber;
+    // Update account details
+    if (data.accountDetails) {
+      const accountDetails = data.accountDetails;
+      foundUser.firstName = accountDetails.firstName;
+      foundUser.lastName = accountDetails.lastName;
+      foundUser.email = accountDetails.email;
+      foundUser.phoneNumber = accountDetails.phoneNumber;
+    }
+    // Update notification preferences
+    if (data.notifications) {
+      const notifications = data.notifications;
+      foundUser.email.enabled = notifications.email.enabled;
+      foundUser.sms.enabled = notifications.sms.enabled;
+      foundUser.pushNotifications.enabled =
+        notifications.pushNotifications.enabled;
+      foundUser.whatsApp.enabled = notifications.whatsApp.enabled;
+    }
+    // Update subscription details
+    if (data.subscriptionDetails) {
+      const subDetails = data.subscriptionDetails;
+      foundUser.subscriptionPlan = subDetails.plan;
+      // TODO: DO some calculations to determine the expiry date of a sub plan
+    }
+    // Update weather alerts
+    if (data.weatherAlerts) {
+      const weatherAlerts = data.weatherAlerts;
+      foundUser.weatherLocations = weatherAlerts;
+    }
 
     // Save the updated user details
     const resp = await foundUser.save();

@@ -1,17 +1,21 @@
 "use client";
 
 import userReducer from "@/reducers/userReducer";
-import { TSubscriptionPlans, TUserState } from "@/types/types";
+import {
+  TAccountDetails,
+  TSubscriptionPlans,
+  TUserState,
+  TWeatherAlerts,
+} from "@/types/types";
 import React, { createContext, useReducer } from "react";
-import { useSession } from "next-auth/react";
 
 const INITIAL_STATE: TUserState = {
-  id: "someID",
+  id: "",
   accountDetails: {
-    firstName: "Ogechukwu",
-    lastName: "Mephors",
-    email: "ogechukwu@example.com",
-    phoneNumber: "+1234567890",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
   },
   weatherAlerts: [
     {
@@ -28,23 +32,30 @@ const INITIAL_STATE: TUserState = {
   ],
   notifications: {
     email: {
-      enabled: true,
+      enabled: false,
     },
     sms: {
-      enabled: true,
+      enabled: false,
     },
     whatsApp: { enabled: false },
     pushNotifications: { enabled: false },
   },
   subscriptionDetails: {
-    plan: "premium",
-    expDate: new Date("2023-12-31"),
+    plan: "free",
+    expDate: new Date(),
   },
 };
 
 /**
  * ALL THE ACTION TYPES
  */
+type SetUserActionType = {
+  type: "SET_USER";
+  payload: {
+    user: TUserState;
+  };
+};
+
 type StartSubscriptionActionType = {
   type: "START_SUBSCRIPTION";
   payload: {
@@ -59,18 +70,35 @@ type CancelSubscriptionActionType = {
   };
 };
 
+type UpdateAccountDetailsActionType = {
+  type: "UPDATE_ACCOUNT_DETAILS";
+  payload: {
+    accountDetails: TAccountDetails;
+  };
+};
+
+type UpdateWeatherAlertsActionType = {
+  type: "UPDATE_WEATHER_ALERTS";
+  payload: {
+    weatherAlerts: TWeatherAlerts;
+  };
+};
+
 export type UserActionTypes =
+  | SetUserActionType
   | StartSubscriptionActionType
-  | CancelSubscriptionActionType;
+  | CancelSubscriptionActionType
+  | UpdateAccountDetailsActionType
+  | UpdateWeatherAlertsActionType;
 
 /**
  * THE REDUCER FUNCTION
  */
 export const UserContext = createContext<{
-  state: TUserState;
+  user: TUserState;
   dispatch: React.Dispatch<UserActionTypes>;
 }>({
-  state: INITIAL_STATE,
+  user: INITIAL_STATE,
   dispatch: () => {},
 });
 
@@ -79,14 +107,12 @@ type UserProviderProps = {
 };
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const session = useSession();
-
   const [state, dispatch] = useReducer(userReducer, INITIAL_STATE);
 
   return (
     <UserContext.Provider
       value={{
-        state,
+        user: state,
         dispatch,
       }}
     >

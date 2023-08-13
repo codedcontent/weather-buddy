@@ -26,7 +26,7 @@ export type RegisterFormProps = {
   confirmPassword: string;
 };
 
-export type AccountDetailFormProps = {
+export type TAccountDetails = {
   firstName: string;
   lastName: string;
   email: string;
@@ -41,7 +41,7 @@ export type Location = {
   };
 };
 
-export type WeatherAlertsProps = {
+export type TWeatherAlerts = {
   weatherAlertId: string;
   location: Location;
   times: string[];
@@ -49,7 +49,7 @@ export type WeatherAlertsProps = {
 
 export type WeatherAlertTimes = "5:00 AM" | "12:00 AM" | "4:00 PM" | "8:00 PM";
 
-export type NotificationsType = {
+export type TNotifications = {
   email: { enabled?: boolean; frequency?: string };
   sms: { enabled?: boolean; frequency?: string };
   whatsApp: { enabled?: boolean; frequency?: string };
@@ -58,18 +58,15 @@ export type NotificationsType = {
 
 export type TSubscriptionPlans = "free" | "standard" | "premium";
 
+export type TSubscriptionDetails = {
+  plan: TSubscriptionPlans;
+  expDate: Date;
+};
+
 export type TUserState = {
   id: string;
-  accountDetails: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-  };
-  weatherAlerts: WeatherAlertsProps;
-  notifications: NotificationsType;
-  subscriptionDetails: {
-    plan: TSubscriptionPlans;
-    expDate: Date;
-  };
+  accountDetails: TAccountDetails;
+  weatherAlerts: TWeatherAlerts;
+  notifications: TNotifications;
+  subscriptionDetails: TSubscriptionDetails;
 };

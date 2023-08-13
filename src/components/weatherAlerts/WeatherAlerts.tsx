@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import NewWeatherAlert from "./newWeatherAlert/NewWeatherAlert";
 import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
-import { WeatherAlertsProps } from "@/types/types";
+import { TWeatherAlerts } from "@/types/types";
 
 type Alerts = {
-  weatherAlerts: WeatherAlertsProps;
+  weatherAlerts: TWeatherAlerts;
 };
 
 const WeatherAlerts = ({ weatherAlerts }: Alerts) => {

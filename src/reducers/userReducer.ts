@@ -5,23 +5,33 @@ const userReducer = (
   state: TUserState,
   action: UserActionTypes
 ): TUserState => {
-  const payload = action.payload;
-
   switch (action.type) {
     case "CANCEL_SUBSCRIPTION":
-      console.log(state.subscriptionDetails);
-      // Cancel users subscription
-
+      // Set the users subscription to free
       state.subscriptionDetails.plan = "free";
-      return { ...(state as TUserState) };
+      return state;
 
     case "START_SUBSCRIPTION":
       // Start users subscription
-      state.subscriptionDetails.plan = payload.subscription;
-      return { ...(state as TUserState) };
+      state.subscriptionDetails.plan = action.payload.subscription;
+      return state;
 
-    // default:
-    //   return { ...(state as TUserState) };
+    case "SET_USER":
+      // Set the user details
+      return action.payload.user;
+
+    case "UPDATE_ACCOUNT_DETAILS":
+      // Get the updates to be made
+      state.accountDetails = action.payload.accountDetails;
+      return state;
+
+    case "UPDATE_WEATHER_ALERTS":
+      // Set the weather alerts
+      state.weatherAlerts = action.payload.weatherAlerts;
+      return state;
+
+    default:
+      return state;
   }
 };
 

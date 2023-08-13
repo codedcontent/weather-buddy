@@ -1,40 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import CustomTextField from "@/components/CustomTextField";
-import { AccountDetailFormProps } from "@/types/types";
 import { useFormik } from "formik";
 import CustomButton from "@/components/CustomButton";
 import accountDetailsSchema from "@/schemas/accountDetailsSchema";
-import { useSession } from "next-auth/react";
-import useSWR from "swr";
-import Loader from "@/components/Loader";
+import { UserContext } from "@/context/UserProvider";
+import ErrorOutError from "@/utils/errorOutError";
 
 const AccountDetailsPage = () => {
-  const session = useSession();
-
-  const fetcher = (...args: any[]) =>
-    // @ts-ignore
-    fetch(...args).then((res) => res.json());
-
-  // SWR users fetch data
-  const { data, mutate, isLoading } = useSWR(
-    //   @ts-ignore
-    `/api/users/${session.data?.id}`,
-    fetcher
-  );
-
-  const accountDetailsInitialInput: AccountDetailFormProps = {
-    firstName: data?.firstName ?? "",
-    email: data?.email ?? "",
-    lastName: data?.lastName ?? "",
-    phoneNumber: data?.phoneNumber ?? "",
-  };
-
-  const handleFormSummit = (values: AccountDetailFormProps) => {
-    console.log(values);
-  };
+  const {
+    user: { accountDetails, id },
+    dispatch,
+  } = useContext(UserContext);
 
   const {
     values,
@@ -46,8 +25,8 @@ const AccountDetailsPage = () => {
     setSubmitting,
     resetForm,
   } = useFormik({
-    initialValues: accountDetailsInitialInput,
-    onSubmit: handleFormSummit,
+    initialValues: accountDetails,
+    onSubmit: () => {},
     validationSchema: accountDetailsSchema,
     enableReinitialize: true,
   });
@@ -63,21 +42,26 @@ const AccountDetailsPage = () => {
     // Disable forms
     setSubmitting(true);
 
-    // @ts-ignore
-    await fetch(`/api/users/${session.data?.id}`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        firstName: values.firstName,
-        lastName: values.lastName,
-        phoneNumber: values.phoneNumber,
-      }),
-    });
+    try {
+      // @ts-ignore
+      await fetch(`/api/users/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ accountDetails: values }),
+      });
 
-    // Enable forms
-    setSubmitting(false);
-
-    // Mutate the formik form to reflect changes
-    mutate();
+      // Update the user
+      dispatch({
+        type: "UPDATE_ACCOUNT_DETAILS",
+        payload: {
+          accountDetails: values,
+        },
+      });
+    } catch (error) {
+      ErrorOutError(error);
+    } finally {
+      // Enable forms
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -100,50 +84,46 @@ const AccountDetailsPage = () => {
 
       {/* Updatable account details */}
       <div className="px-8">
-        {isLoading ? (
-          <Loader variant="page" />
-        ) : (
-          <form
-            className="flex flex-col gap-y-0 mt-6 gap-2"
-            onSubmit={handleSubmit}
-          >
-            {/* First & Last name */}
-            <div className="flex w-full gap-6">
-              <CustomTextField
-                label="First Name"
-                {...getFieldProps("firstName")}
-                error={errors.firstName}
-                touched={touched.firstName}
-                type="text"
-                disabled={isSubmitting}
-                placeholder="John"
-              />
+        <form
+          className="flex flex-col gap-y-0 mt-6 gap-2"
+          onSubmit={handleSubmit}
+        >
+          {/* First & Last name */}
+          <div className="flex w-full gap-6">
+            <CustomTextField
+              label="First Name"
+              {...getFieldProps("firstName")}
+              error={errors.firstName}
+              touched={touched.firstName}
+              type="text"
+              disabled={isSubmitting}
+              placeholder="John"
+            />
 
-              <CustomTextField
-                label="Last Name"
-                {...getFieldProps("lastName")}
-                error={errors.lastName}
-                touched={touched.lastName}
-                type="text"
-                disabled={isSubmitting}
-                placeholder="Doe"
-              />
-            </div>
+            <CustomTextField
+              label="Last Name"
+              {...getFieldProps("lastName")}
+              error={errors.lastName}
+              touched={touched.lastName}
+              type="text"
+              disabled={isSubmitting}
+              placeholder="Doe"
+            />
+          </div>
 
-            {/* Email and Number */}
-            <div className="flex w-full gap-6">
-              <CustomTextField
-                label="Phone Number"
-                {...getFieldProps("phoneNumber")}
-                error={errors.phoneNumber}
-                touched={touched.phoneNumber}
-                type="text"
-                disabled={isSubmitting}
-                placeholder="081xxxxxxxx"
-              />
-            </div>
-          </form>
-        )}
+          {/* Email and Number */}
+          <div className="flex w-full gap-6">
+            <CustomTextField
+              label="Phone Number"
+              {...getFieldProps("phoneNumber")}
+              error={errors.phoneNumber}
+              touched={touched.phoneNumber}
+              type="text"
+              disabled={isSubmitting}
+              placeholder="081xxxxxxxx"
+            />
+          </div>
+        </form>
 
         {/* Change password */}
         <Link
@@ -154,6 +134,7 @@ const AccountDetailsPage = () => {
         </Link>
       </div>
 
+      {/* Horizontal line */}
       <div className="pl-8 mt-14 mb-6">
         <hr className="border-wb-silver" />
       </div>
@@ -164,15 +145,14 @@ const AccountDetailsPage = () => {
           label="Discard Changes"
           variant="outlined"
           onClick={discardChanges}
-          disabled={isLoading}
+          disabled={isSubmitting}
         />
 
         <CustomButton
           label="Save Changes"
           variant="filled"
           onClick={saveChanges}
-          disabled={isLoading}
-          loading={isSubmitting}
+          disabled={isSubmitting}
         />
       </div>
     </div>

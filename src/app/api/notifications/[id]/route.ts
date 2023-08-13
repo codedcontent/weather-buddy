@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/utils/db";
 import User from "@/models/User";
 import httpStatusCodes from "@/constants/httpStatusCodes";
-import { NotificationsType } from "@/types/types";
+import { TNotifications } from "@/types/types";
 
 type Params = {
   params: {
@@ -55,7 +55,7 @@ export const PATCH = async (request: Request, { params }: Params) => {
     // Get the notification updates
     const data = await request.json();
 
-    const userNotifications: NotificationsType = data.notifications;
+    const userNotifications: TNotifications = data.notifications;
 
     // Find the user being updated
     const foundUser = await User.findById(id);
