@@ -27,7 +27,7 @@ const INITIAL_STATE: TUserState = {
           long: 0,
         },
       },
-      times: [""],
+      times: ["5:00 AM"],
     },
   ],
   notifications: {

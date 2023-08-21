@@ -1,5 +1,7 @@
 import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
-import { WeatherAlertTimes } from "@/types/types";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { addNewTime } from "@/slices/weatherAlertsSlice";
+import { TWeatherAlertTimes } from "@/types/types";
 import React, { useContext } from "react";
 
 type Props = {
@@ -8,7 +10,7 @@ type Props = {
   setSelectOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const allowedAlertTimes: WeatherAlertTimes[] = [
+const allowedAlertTimes: TWeatherAlertTimes[] = [
   "5:00 AM",
   "12:00 AM",
   "4:00 PM",
@@ -16,16 +18,15 @@ const allowedAlertTimes: WeatherAlertTimes[] = [
 ];
 
 const TimeSelect = ({ times, setSelectOpen, id }: Props) => {
-  const { dispatch } = useContext(WeatherAlertsContext);
+  const dispatch = useAppDispatch();
 
-  const addTime = (time: string) => {
-    dispatch({
-      type: "ADD_NEW_TIME",
-      payload: {
-        weatherAlertId: id,
-        time,
-      },
-    });
+  const addTime = (time: TWeatherAlertTimes) => {
+    dispatch(
+      addNewTime({
+        locationId: id,
+        time: time,
+      })
+    );
 
     setSelectOpen(false);
   };

@@ -4,9 +4,12 @@ import {
   TAccountDetails,
   TSubscriptionDetails,
   TWeatherAlerts,
+  TLocation,
+  TWeatherAlertTimes,
 } from "@/types/types";
 import connectDB from "@/utils/db";
 import { NextResponse } from "next/server";
+import { v4 as uuidV4 } from "uuid";
 
 type ParamsProps = {
   params: {
@@ -24,6 +27,18 @@ export const GET = async (request: Request, { params }: ParamsProps) => {
   try {
     const user = await User.findById(id);
 
+    const mappedWeatherAlerts: TWeatherAlerts = user.weatherLocations.map(
+      (alert: {
+        location: TLocation;
+        times: TWeatherAlertTimes;
+        weatherAlertId: string;
+      }) => ({
+        weatherAlertId: alert.weatherAlertId ?? uuidV4(),
+        location: alert.location,
+        times: alert.times,
+      })
+    );
+
     const userData = {
       accountDetails: {
         firstName: user.firstName,
@@ -31,7 +46,7 @@ export const GET = async (request: Request, { params }: ParamsProps) => {
         email: user.email,
         phoneNumber: user.phoneNumber,
       },
-      weatherAlerts: user.weatherLocations,
+      weatherAlerts: mappedWeatherAlerts,
       notifications: user.notificationSettings,
       subscriptionDetails: {
         plan: user.subscriptionPlan,

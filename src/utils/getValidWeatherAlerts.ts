@@ -1,9 +1,9 @@
-import { Location, WeatherAlertTimes, TWeatherAlerts } from "@/types/types";
+import { TLocation, TWeatherAlertTimes, TWeatherAlerts } from "@/types/types";
 
 const getValidWeatherAlerts = (weatherAlerts: TWeatherAlerts) => {
   // Empty list of weather alerts
   const validAlerts: {
-    location: Location;
+    location: TLocation;
     times: string[];
   }[] = [];
 

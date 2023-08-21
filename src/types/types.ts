@@ -1,3 +1,5 @@
+export type TWeatherAlertTimes = "5:00 AM" | "12:00 AM" | "4:00 PM" | "8:00 PM";
+
 export type CustomTextFieldProps = {
   error: string | undefined;
   label: string;
@@ -33,7 +35,7 @@ export type TAccountDetails = {
   phoneNumber: string;
 };
 
-export type Location = {
+export type TLocation = {
   title: string;
   coord: {
     lat: number;
@@ -41,13 +43,19 @@ export type Location = {
   };
 };
 
-export type TWeatherAlerts = {
+export type TSingleWeatherAlert = {
   weatherAlertId: string;
-  location: Location;
-  times: string[];
-}[];
+  location: TLocation;
+  times: TWeatherAlertTimes[];
+};
 
-export type WeatherAlertTimes = "5:00 AM" | "12:00 AM" | "4:00 PM" | "8:00 PM";
+export type TWeatherAlert = {
+  id: string;
+  location: TLocation;
+  times: TWeatherAlertTimes[];
+};
+
+export type TWeatherAlerts = TSingleWeatherAlert[];
 
 export type TNotifications = {
   email: { enabled?: boolean; frequency?: string };

@@ -1,35 +1,36 @@
 "use client";
 
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { BsFillPatchQuestionFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { IoAddOutline } from "react-icons/io5";
-import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
 import { HiSelector } from "react-icons/hi";
 import TimeSelect from "./TimeSelect";
 import useClickAway from "@/hooks/useClickAway";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { deleteTime } from "@/slices/weatherAlertsSlice";
+import { TWeatherAlertTimes } from "@/types/types";
 
 type WeatherAlertTimesProps = {
   id: string;
-  times: string[];
+  times: TWeatherAlertTimes[];
 };
 
 const WeatherAlertTimesPicker = ({ times, id }: WeatherAlertTimesProps) => {
-  const { dispatch } = useContext(WeatherAlertsContext);
+  const dispatch = useAppDispatch();
 
   // Is the Time Select Open
   const [selectOpen, setSelectOpen] = useState(false);
 
   const selectRef = useRef<HTMLDivElement>(null);
 
-  const removeTime = (time: string) => {
-    dispatch({
-      type: "DELETE_TIME",
-      payload: {
-        weatherAlertId: id,
-        time,
-      },
-    });
+  const handleRemoveTime = (timeIndex: number) => {
+    dispatch(
+      deleteTime({
+        locationId: id,
+        timeIndex,
+      })
+    );
   };
 
   const handleAddNewTimeClick = () => {
@@ -81,7 +82,7 @@ const WeatherAlertTimesPicker = ({ times, id }: WeatherAlertTimesProps) => {
 
               <MdDelete
                 className="text-wb-danger-red cursor-pointer"
-                onClick={() => removeTime(time)}
+                onClick={() => handleRemoveTime(index)}
               />
             </div>
           ))}

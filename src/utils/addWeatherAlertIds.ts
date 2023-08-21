@@ -1,10 +1,10 @@
-import { Location, TWeatherAlerts } from "@/types/types";
+import { TLocation, TWeatherAlerts } from "@/types/types";
 import { v4 as uuidV4 } from "uuid";
 
 const addWeatherAlertIds = (
   weatherAlerts: {
     _id: any;
-    location: Location;
+    location: TLocation;
     times: string[];
   }[]
 ): TWeatherAlerts => {

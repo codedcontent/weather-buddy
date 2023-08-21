@@ -1,36 +1,42 @@
-import React, { useContext } from "react";
+import React from "react";
 import { IoAddOutline } from "react-icons/io5";
 import NewWeatherAlert from "./newWeatherAlert/NewWeatherAlert";
-import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
 import { TWeatherAlerts } from "@/types/types";
+import { useAppSelector } from "@/hooks/redux-hooks";
 
 type Alerts = {
   weatherAlerts: TWeatherAlerts;
 };
 
-const WeatherAlerts = ({ weatherAlerts }: Alerts) => {
-  const { dispatch } = useContext(WeatherAlertsContext);
+const WeatherAlerts = () => {
+  const weatherAlerts = useAppSelector((state) => state.weatherAlerts);
 
-  const addNewWeatherLocation = () => {
-    dispatch({
-      type: "ADD_NEW_LOCATION",
-    });
+  const addNewWeatherAlert = () => {
+    // const newWeatherAlert: TSingleWeatherAlert = {
+    //   times: ["5:00 AM"],
+    //   weatherAlertId: uuidV4(),
+    //   location: {
+    //     coord: { lat: 0, long: 0 },
+    //     title: "",
+    //   },
+    // };
+    // dispatch({
+    //   type: "UPDATE_WEATHER_ALERTS",
+    //   payload: {
+    //     weatherAlerts: [...user.weatherAlerts, newWeatherAlert],
+    //   },
+    // });
   };
 
   return (
     <div className="space-y-4">
       {weatherAlerts.map((weatherAlert) => {
-        return (
-          <NewWeatherAlert
-            key={weatherAlert.weatherAlertId}
-            {...weatherAlert}
-          />
-        );
+        return <NewWeatherAlert key={weatherAlert.id} {...weatherAlert} />;
       })}
 
       <button
         className="flex gap-0.5 items-center border-b w-max cursor-pointer"
-        onClick={addNewWeatherLocation}
+        onClick={addNewWeatherAlert}
       >
         <p className="text-sm font-light">Add new location</p>
 

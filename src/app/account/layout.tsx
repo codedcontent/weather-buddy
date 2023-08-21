@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import CustomButton from "@/components/CustomButton";
@@ -8,8 +8,9 @@ import UpgradePlanCard from "@/components/UpgradePlanCard";
 import AccountOptions from "@/components/accountOptions/AccountOptions";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
-import { WeatherAlertsProvider } from "@/context/WeatherAlertsProvider";
 import { UserContext } from "@/context/UserProvider";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { fetchWeatherAlerts } from "@/slices/weatherAlertsSlice";
 
 type AccountLayoutProps = {
   children: React.ReactNode;
@@ -18,7 +19,10 @@ type AccountLayoutProps = {
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   const session = useSession();
   const router = useRouter();
-  const { dispatch } = useContext(UserContext);
+  const appDispatch = useAppDispatch();
+
+  const { user, dispatch } = useContext(UserContext);
+  const [userDetailsAvailable, setUserDetailsAvailable] = useState(false);
 
   // Protect the account route
   // TODO: Replace this with a middleware instead
@@ -38,6 +42,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
       const data = await fetch(url);
       const userData = await data.json();
 
+      // Set user details
       dispatch({
         type: "SET_USER",
         payload: {
@@ -48,14 +53,33 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
           },
         },
       });
+
+      setUserDetailsAvailable(true);
     };
 
     if (session.data) {
       getUserData();
+
+      // Fetch weather locations
+      appDispatch(
+        fetchWeatherAlerts({
+          // @ts-ignore
+          id: session.data?.id as string,
+        })
+      );
     }
   }, [dispatch, session.data]);
 
-  if (session.status === "loading" || session.status === "unauthenticated")
+  useEffect(() => {
+    // console.log(user.weatherAlerts);
+    // console.log(user.weatherAlerts);
+  }, [user.weatherAlerts]);
+
+  if (
+    session.status === "loading" ||
+    session.status === "unauthenticated" ||
+    !userDetailsAvailable
+  )
     return (
       <div className="bg-wb-primary absolute h-screen w-screen text-white">
         <Loader variant="page" />
@@ -103,7 +127,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
           </div>
 
           <div className="w-1/2 py-8 relative h-full overflow-hidden">
-            <WeatherAlertsProvider>{children}</WeatherAlertsProvider>
+            {children}
           </div>
         </div>
       </section>

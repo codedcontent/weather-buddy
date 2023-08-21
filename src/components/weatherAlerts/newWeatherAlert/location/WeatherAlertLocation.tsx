@@ -5,11 +5,11 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { BsFillPatchQuestionFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import LocationSuggestions from "./LocationSuggestions";
-import { Location } from "@/types/types";
+import { TLocation } from "@/types/types";
 
 type WeatherAlertLocationProps = {
   id: string;
-  location: Location;
+  location: TLocation;
 };
 
 const WeatherAlertLocationPicker = ({
@@ -23,7 +23,7 @@ const WeatherAlertLocationPicker = ({
 
   // State mgt. fot the weather location input
   const [weatherAlertLocation, setWeatherAlertLocation] =
-    useState<Location>(location);
+    useState<TLocation>(location);
 
   // State mgt. for if to show suggestions
   const [showSuggestions, setShowSuggestions] = useState(false);

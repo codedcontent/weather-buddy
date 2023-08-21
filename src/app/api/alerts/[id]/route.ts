@@ -1,7 +1,9 @@
 import User from "@/models/User";
+import { TLocation, TWeatherAlert, TWeatherAlertTimes } from "@/types/types";
 import addWeatherAlertIds from "@/utils/addWeatherAlertIds";
 import connectDB from "@/utils/db";
 import getValidWeatherAlerts from "@/utils/getValidWeatherAlerts";
+import { nanoid } from "@reduxjs/toolkit";
 import { NextResponse } from "next/server";
 
 type ParamsProps = {
@@ -16,9 +18,9 @@ export const GET = async (request: Request, { params }: ParamsProps) => {
   try {
     await connectDB();
 
-    const usersAlerts = await User.findById(id);
+    const foundUser = await User.findById(id);
 
-    if (!usersAlerts) {
+    if (!foundUser) {
       return new NextResponse(
         JSON.stringify({
           msg: "No such user exist.",
@@ -27,10 +29,20 @@ export const GET = async (request: Request, { params }: ParamsProps) => {
       );
     }
 
-    const weatherLocations = addWeatherAlertIds(usersAlerts.weatherLocations);
+    const weatherAlerts: TWeatherAlert = foundUser.weatherLocations.map(
+      (alert: {
+        location: TLocation;
+        times: TWeatherAlertTimes;
+        id: string;
+      }) => ({
+        id: alert.id ?? nanoid(),
+        location: alert.location,
+        times: alert.times,
+      })
+    );
 
     // Send back the users weather alerts
-    return new NextResponse(JSON.stringify(weatherLocations), {
+    return new NextResponse(JSON.stringify(weatherAlerts), {
       status: 200,
     });
   } catch (error) {

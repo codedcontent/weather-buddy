@@ -3,7 +3,7 @@
 import Loader from "@/components/Loader";
 import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
 import useClickAway from "@/hooks/useClickAway";
-import { Location } from "@/types/types";
+import { TLocation } from "@/types/types";
 import React, { useContext, useEffect, useState } from "react";
 
 type LocationSuggestionsProps = {
@@ -11,7 +11,7 @@ type LocationSuggestionsProps = {
   text: string;
   refElement: React.RefObject<HTMLDivElement>;
   setShowSuggestions: React.Dispatch<React.SetStateAction<boolean>>;
-  setWeatherAlertLocation: React.Dispatch<React.SetStateAction<Location>>;
+  setWeatherAlertLocation: React.Dispatch<React.SetStateAction<TLocation>>;
 };
 
 const LocationSuggestions = ({
@@ -22,7 +22,7 @@ const LocationSuggestions = ({
   setWeatherAlertLocation,
 }: LocationSuggestionsProps) => {
   const [isSearching, setIsSearching] = useState(true);
-  const [suggestions, setSuggestions] = useState<Location[]>([]);
+  const [suggestions, setSuggestions] = useState<TLocation[]>([]);
   const { dispatch } = useContext(WeatherAlertsContext);
 
   const handleClickAway = () => {
@@ -30,7 +30,7 @@ const LocationSuggestions = ({
     setIsSearching(false);
   };
 
-  const handleSuggestionClick = (suggestion: Location) => {
+  const handleSuggestionClick = (suggestion: TLocation) => {
     setShowSuggestions(false);
 
     // Since the user clicked on a suggestion, update the location for that weather alert
@@ -100,7 +100,7 @@ const LocationSuggestions = ({
             </div>
           ) : (
             <div className="w-full space-y-2 divide-y-2">
-              {suggestions.map((suggestion: Location, index) => (
+              {suggestions.map((suggestion: TLocation, index) => (
                 <div
                   className="w-full"
                   key={index}

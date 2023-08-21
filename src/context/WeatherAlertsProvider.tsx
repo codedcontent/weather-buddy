@@ -1,14 +1,14 @@
 "use client";
 // TODO: REPLACE LOCATION_ID's WITH LOCATION_INDEX's
 
-import { Location, TWeatherAlerts } from "@/types/types";
+import { TLocation, TWeatherAlerts } from "@/types/types";
 import React, { createContext, useReducer } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 // The ts-type of our state in the reducer
 type StateType = {
   weatherAlertId: string;
-  location: Location;
+  location: TLocation;
   times: string[];
 }[];
 
@@ -51,7 +51,7 @@ type UpdateLocationActionType = {
   type: "UPDATE_LOCATION";
   payload: {
     weatherAlertId: string;
-    newLocation: Location;
+    newLocation: TLocation;
   };
 };
 
