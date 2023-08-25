@@ -56,12 +56,14 @@ export const GET = async (request: Request, { params }: ParamsProps) => {
   }
 };
 
-export const PUT = async (request: Request, { params }: ParamsProps) => {
+export const POST = async (request: Request, { params }: ParamsProps) => {
   // Get the id of the user
   const { id } = params;
 
   // Get the users alerts to update
   const weatherAlerts = await request.json();
+
+  console.log({ weatherAlerts: weatherAlerts[0] });
 
   // Get the valid alerts only
   const validAlerts = getValidWeatherAlerts(weatherAlerts);

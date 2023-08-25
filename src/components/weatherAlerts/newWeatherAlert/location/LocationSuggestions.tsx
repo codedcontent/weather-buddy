@@ -2,7 +2,9 @@
 
 import Loader from "@/components/Loader";
 import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
+import { useAppDispatch } from "@/hooks/redux-hooks";
 import useClickAway from "@/hooks/useClickAway";
+import { updateWeatherAlertLocation } from "@/slices/weatherAlertsSlice";
 import { TLocation } from "@/types/types";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -23,7 +25,7 @@ const LocationSuggestions = ({
 }: LocationSuggestionsProps) => {
   const [isSearching, setIsSearching] = useState(true);
   const [suggestions, setSuggestions] = useState<TLocation[]>([]);
-  const { dispatch } = useContext(WeatherAlertsContext);
+  const dispatch = useAppDispatch();
 
   const handleClickAway = () => {
     setShowSuggestions(false);
@@ -34,13 +36,15 @@ const LocationSuggestions = ({
     setShowSuggestions(false);
 
     // Since the user clicked on a suggestion, update the location for that weather alert
-    dispatch({
-      type: "UPDATE_LOCATION",
-      payload: {
-        weatherAlertId: id,
-        newLocation: suggestion,
-      },
-    });
+    // dispatch({
+    //   type: "UPDATE_LOCATION",
+    //   payload: {
+    //     weatherAlertId: id,
+    //     newLocation: suggestion,
+    //   },
+    // });
+
+    dispatch(updateWeatherAlertLocation({ id, location: suggestion }));
 
     setWeatherAlertLocation(suggestion);
   };

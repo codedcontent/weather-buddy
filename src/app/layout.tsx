@@ -1,11 +1,10 @@
-// TODO: Add Toast Notifications
-
 import AuthProvider from "@/context/AuthProvider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import UserProvider from "@/context/UserProvider";
 import ReduxReducer from "@/context/ReduxProvider";
+import Snackbar from "@/context/Snackbar";
 
 const inter = Poppins({
   subsets: ["latin"],
@@ -35,9 +34,11 @@ export default function RootLayout({
       <ReduxReducer>
         <AuthProvider>
           <UserProvider>
-            <body className={`${inter.className} h-screen w-screen`}>
-              {children}
-            </body>
+            <Snackbar>
+              <body className={`${inter.className} h-screen w-screen`}>
+                {children}
+              </body>
+            </Snackbar>
           </UserProvider>
         </AuthProvider>
       </ReduxReducer>

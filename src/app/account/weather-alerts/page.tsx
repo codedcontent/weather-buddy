@@ -4,69 +4,93 @@ import React, { useContext, useEffect, useState } from "react";
 import CustomButton from "@/components/CustomButton";
 import WeatherAlerts from "@/components/weatherAlerts/WeatherAlerts";
 import { TWeatherAlert, TWeatherAlerts } from "@/types/types";
-import { UserContext } from "@/context/UserProvider";
-import ErrorOutError from "@/utils/errorOutError";
+import { enqueueSnackbar } from "notistack";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import {
+  getWeatherAlertsError,
+  getWeatherAlertsStatus,
+  resetWeatherAlerts,
+  saveWeatherAlertChanges,
+  selectAllWeatherAlerts,
+} from "@/slices/weatherAlertsSlice";
+import Loader from "@/components/Loader";
+import { selectAuth } from "@/slices/authSlice";
+import axios from "axios";
 
 const WeatherAlertsPage = () => {
-  // const {
-  //   user: { weatherAlerts, id },
-  //   dispatch,
-  // } = useContext(UserContext);
-
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
-  const weatherAlerts = useAppSelector((state) => state.weatherAlerts);
+  const weatherAlerts = useAppSelector(selectAllWeatherAlerts);
+  const weatherAlertsStatus = useAppSelector(getWeatherAlertsStatus);
+  const weatherAlertsError = useAppSelector(getWeatherAlertsError);
+  const auth = useAppSelector(selectAuth);
 
   const [initialAlerts_TEMP, setInitialAlerts_TEMP] = useState<
     TWeatherAlert[] | null
   >(null);
 
   const saveChanges = async () => {
-    // setIsLoading(true);
-    // // Update the users weather alerts
-    // try {
-    //   // @ts-ignore
-    //   await fetch(`/api/users/${id}`, {
-    //     method: "PATCH",
-    //     body: JSON.stringify({ weatherAlerts }),
-    //   });
-    // } catch (error) {
-    //   ErrorOutError(error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    setIsLoading(true);
+
+    // Update the users weather alerts
+    const WEATHER_ALERTS_URL = "/api/alerts";
+
+    const url = `${WEATHER_ALERTS_URL}/${auth.id}`;
+
+    try {
+      const resp = await axios.post(url, weatherAlerts);
+
+      if (resp.data) {
+        enqueueSnackbar("Weather alerts updated", { variant: "success" });
+      } else {
+        console.log(resp);
+      }
+    } catch (error: any) {
+      enqueueSnackbar(error.message, { variant: "success" });
+    } finally {
+      setIsLoading(false);
+    }
+
+    // dispatch(
+    //   saveWeatherAlertChanges({
+    //     userId: auth.id,
+    //     weatherAlerts,
+    //   })
+    // );
   };
 
   // Reset the users changes
   const discardChanges = () => {
-    // // Ensure changes have been made
-    // if (initialAlerts_TEMP) {
-    //   // Reset the state
-    //   dispatch({
-    //     type: "UPDATE_WEATHER_ALERTS",
-    //     payload: {
-    //       weatherAlerts: initialAlerts_TEMP,
-    //     },
-    //   });
-    //   // Clear the users initially loaded temporary alerts
-    //   setInitialAlerts_TEMP(null);
-    // }
+    // Check if changes have been made
+    if (initialAlerts_TEMP) {
+      // Reset the state
+      dispatch(resetWeatherAlerts(initialAlerts_TEMP));
+
+      // Clear the users initially loaded temporary alerts
+      // setInitialAlerts_TEMP(null);
+    }
   };
 
-  // Set the users weather alerts
+  // Temporarily store the users weather alerts
   useEffect(() => {
-    // Set the users fetched weather alerts
-    const setInitialUserWeatherAlerts = async () => {
-      const userAlerts = weatherAlerts.slice();
+    const setInitialUserWeatherAlerts = () => {
+      const userAlerts = Array.from(weatherAlerts);
 
-      // Store the users initially loaded alerts temporarily in order to discard changes if necessary
       setInitialAlerts_TEMP(userAlerts);
     };
 
-    setInitialUserWeatherAlerts();
+    if (weatherAlertsStatus === "success") {
+      setInitialUserWeatherAlerts();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [weatherAlertsStatus]);
+
+  // Check weather alerts status
+  useEffect(() => {
+    if (weatherAlertsStatus === "failed") {
+      enqueueSnackbar(weatherAlertsError, { variant: "error" });
+    }
+  }, [weatherAlertsError, weatherAlertsStatus]);
 
   return (
     <div className="w-full h-full overflow-y-auto pb-2">
@@ -89,7 +113,11 @@ const WeatherAlertsPage = () => {
 
       {/* Updatable weather locations and alert times */}
       <div className="px-8 mt-6">
-        <WeatherAlerts />
+        {weatherAlertsStatus === "loading" ? (
+          <Loader variant="action" />
+        ) : (
+          <WeatherAlerts />
+        )}
       </div>
 
       {/* <-- --> */}

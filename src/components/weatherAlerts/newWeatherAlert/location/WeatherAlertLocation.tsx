@@ -1,11 +1,12 @@
 "use client";
 
-import { WeatherAlertsContext } from "@/context/WeatherAlertsProvider";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { BsFillPatchQuestionFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import LocationSuggestions from "./LocationSuggestions";
 import { TLocation } from "@/types/types";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { deleteWeatherAlert } from "@/slices/weatherAlertsSlice";
 
 type WeatherAlertLocationProps = {
   id: string;
@@ -16,7 +17,7 @@ const WeatherAlertLocationPicker = ({
   location,
   id,
 }: WeatherAlertLocationProps) => {
-  const { dispatch } = useContext(WeatherAlertsContext);
+  const dispatch = useAppDispatch();
 
   // A reference to the element containing the location picker and suggestions elements
   const locationPickerRef = useRef<HTMLDivElement>(null);
@@ -29,11 +30,8 @@ const WeatherAlertLocationPicker = ({
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Delete a weather alert
-  const deleteWeatherAlert = () => {
-    dispatch({
-      type: "DELETE_LOCATION",
-      payload: { weatherAlertId: id },
-    });
+  const handleDeleteWeatherAlert = () => {
+    dispatch(deleteWeatherAlert({ locationId: id }));
   };
 
   // Handle input changes
@@ -83,7 +81,7 @@ const WeatherAlertLocationPicker = ({
             {/* <p className="uppercase text-sm">Delete Location</p> */}
             <MdDelete
               className="text-white text-lg"
-              onClick={deleteWeatherAlert}
+              onClick={handleDeleteWeatherAlert}
             />
           </button>
         </div>

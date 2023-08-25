@@ -4,21 +4,27 @@ import {
   TWeatherAlert,
   TWeatherAlertTimes,
 } from "@/types/types";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, nanoid } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "@/app/store";
 
 const WEATHER_ALERTS_URL = "/api/alerts";
 
-type InitialState = TSingleWeatherAlert;
+// TWeatherAlert[]
+type TStateErrors = "idle" | "loading" | "success" | "failed";
 
-const initialState: TWeatherAlert[] = [
-  //   {
-  //     location: {} as TLocation,
-  //     times: [],
-  //     id: "",
-  //   },
-];
+type InitialStateType = {
+  weatherAlerts: TWeatherAlert[];
+  status: TStateErrors;
+  error: string;
+};
+
+const initialState: InitialStateType = {
+  weatherAlerts: [],
+  status: "idle",
+  error: "",
+};
 
 // Get the users weather alerts
 export const fetchWeatherAlerts = createAsyncThunk(
@@ -38,6 +44,17 @@ export const fetchWeatherAlerts = createAsyncThunk(
   }
 );
 
+export const saveWeatherAlertChanges = createAsyncThunk(
+  "weatherAlerts/saveWeatherAlertChanges",
+  async ({
+    userId,
+    weatherAlerts,
+  }: {
+    userId: string;
+    weatherAlerts: TWeatherAlert[];
+  }) => {}
+);
+
 const weatherAlertsSlice = createSlice({
   name: "weatherAlerts",
   initialState,
@@ -50,7 +67,9 @@ const weatherAlertsSlice = createSlice({
       }>
     ) => {
       const { locationId, time } = action.payload;
-      const foundAlert = state.find((alert) => alert.id === locationId);
+      const foundAlert = state.weatherAlerts.find(
+        (alert) => alert.id === locationId
+      );
 
       if (foundAlert) {
         foundAlert.times.push(time);
@@ -65,11 +84,50 @@ const weatherAlertsSlice = createSlice({
       }>
     ) => {
       const { locationId, timeIndex } = action.payload;
-      const foundAlert = state.find((alert) => alert.id === locationId);
+      const foundAlert = state.weatherAlerts.find(
+        (alert) => alert.id === locationId
+      );
 
       if (foundAlert) {
         // Remove the deleted time from the alerts time array
         foundAlert.times.splice(timeIndex, 1);
+      }
+    },
+
+    addNewWeatherAlert: (state) => {
+      state.weatherAlerts.push({
+        id: nanoid(),
+        times: ["5:00 AM"],
+        location: {
+          title: "",
+          coord: { lat: 0, long: 0 },
+        },
+      });
+    },
+
+    deleteWeatherAlert: (
+      state,
+      action: PayloadAction<{ locationId: string }>
+    ) => {
+      state.weatherAlerts = state.weatherAlerts.filter(
+        (weatherAlert) => weatherAlert.id !== action.payload.locationId
+      );
+    },
+
+    resetWeatherAlerts: (state, action: PayloadAction<TWeatherAlert[]>) => {
+      state.weatherAlerts = action.payload;
+    },
+
+    updateWeatherAlertLocation: (
+      state,
+      action: PayloadAction<{ location: TLocation; id: string }>
+    ) => {
+      const foundWeatherAlert = state.weatherAlerts.find(
+        (weatherAlert) => weatherAlert.id === action.payload.id
+      );
+
+      if (foundWeatherAlert) {
+        foundWeatherAlert.location = action.payload.location;
       }
     },
   },
@@ -78,21 +136,38 @@ const weatherAlertsSlice = createSlice({
     builder
       .addCase(
         fetchWeatherAlerts.fulfilled,
-        (_, action: PayloadAction<TWeatherAlert[]>) => {
-          return action.payload;
+        (state, action: PayloadAction<TWeatherAlert[]>) => {
+          state.status = "success";
+          state.weatherAlerts = action.payload;
         }
       )
       .addCase(fetchWeatherAlerts.pending, (state, action) => {
-        // console.log({ state, action, status: "pending" });
+        state.status = "loading";
       })
       .addCase(fetchWeatherAlerts.rejected, (state, action) => {
-        // console.log({ state, action, status: "rejected" });
-      });
+        state.status = "failed";
+        state.error = action.error.message as string;
+      })
+      .addCase(saveWeatherAlertChanges.fulfilled, (state, action) => {});
   },
 });
 
 const weatherAlertsReducer = weatherAlertsSlice.reducer;
 
-export const { addNewTime, deleteTime } = weatherAlertsSlice.actions;
+export const selectAllWeatherAlerts = (state: RootState) =>
+  state.weatherAlerts.weatherAlerts;
+export const getWeatherAlertsStatus = (state: RootState) =>
+  state.weatherAlerts.status;
+export const getWeatherAlertsError = (state: RootState) =>
+  state.weatherAlerts.error;
+
+export const {
+  addNewTime,
+  deleteTime,
+  addNewWeatherAlert,
+  deleteWeatherAlert,
+  resetWeatherAlerts,
+  updateWeatherAlertLocation,
+} = weatherAlertsSlice.actions;
 
 export default weatherAlertsReducer;

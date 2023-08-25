@@ -1,31 +1,17 @@
-import React from "react";
 import { IoAddOutline } from "react-icons/io5";
 import NewWeatherAlert from "./newWeatherAlert/NewWeatherAlert";
-import { TWeatherAlerts } from "@/types/types";
-import { useAppSelector } from "@/hooks/redux-hooks";
-
-type Alerts = {
-  weatherAlerts: TWeatherAlerts;
-};
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import {
+  addNewWeatherAlert,
+  selectAllWeatherAlerts,
+} from "@/slices/weatherAlertsSlice";
 
 const WeatherAlerts = () => {
-  const weatherAlerts = useAppSelector((state) => state.weatherAlerts);
+  const weatherAlerts = useAppSelector(selectAllWeatherAlerts);
+  const dispatch = useAppDispatch();
 
-  const addNewWeatherAlert = () => {
-    // const newWeatherAlert: TSingleWeatherAlert = {
-    //   times: ["5:00 AM"],
-    //   weatherAlertId: uuidV4(),
-    //   location: {
-    //     coord: { lat: 0, long: 0 },
-    //     title: "",
-    //   },
-    // };
-    // dispatch({
-    //   type: "UPDATE_WEATHER_ALERTS",
-    //   payload: {
-    //     weatherAlerts: [...user.weatherAlerts, newWeatherAlert],
-    //   },
-    // });
+  const handleAddNewWeatherAlert = () => {
+    dispatch(addNewWeatherAlert());
   };
 
   return (
@@ -36,7 +22,7 @@ const WeatherAlerts = () => {
 
       <button
         className="flex gap-0.5 items-center border-b w-max cursor-pointer"
-        onClick={addNewWeatherAlert}
+        onClick={handleAddNewWeatherAlert}
       >
         <p className="text-sm font-light">Add new location</p>
 

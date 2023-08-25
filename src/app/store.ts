@@ -1,3 +1,4 @@
+import authReducer from "@/slices/authSlice";
 import counterReducer from "@/slices/counterSlice";
 import weatherAlertsReducer from "@/slices/weatherAlertsSlice";
 import { configureStore } from "@reduxjs/toolkit";
@@ -6,6 +7,7 @@ export const store = configureStore({
   reducer: {
     counter: counterReducer,
     weatherAlerts: weatherAlertsReducer,
+    auth: authReducer,
   },
 });
 

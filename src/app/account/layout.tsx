@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import CustomButton from "@/components/CustomButton";
@@ -8,9 +8,9 @@ import UpgradePlanCard from "@/components/UpgradePlanCard";
 import AccountOptions from "@/components/accountOptions/AccountOptions";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
-import { UserContext } from "@/context/UserProvider";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { fetchWeatherAlerts } from "@/slices/weatherAlertsSlice";
+import { authenticate } from "@/slices/authSlice";
 
 type AccountLayoutProps = {
   children: React.ReactNode;
@@ -19,13 +19,9 @@ type AccountLayoutProps = {
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   const session = useSession();
   const router = useRouter();
-  const appDispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-  const { user, dispatch } = useContext(UserContext);
-  const [userDetailsAvailable, setUserDetailsAvailable] = useState(false);
-
-  // Protect the account route
-  // TODO: Replace this with a middleware instead
+  // TODO: Protect the account route
   useEffect(() => {
     if (session.status === "unauthenticated") {
       router.replace("/login");
@@ -34,52 +30,26 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
 
   // Load the user details
   useEffect(() => {
-    const getUserData = async () => {
-      const url =
-        // @ts-ignore
-        `/api/users/${session.data?.id}`;
-
-      const data = await fetch(url);
-      const userData = await data.json();
-
-      // Set user details
-      dispatch({
-        type: "SET_USER",
-        payload: {
-          user: {
-            // @ts-ignore
-            id: session.data?.id,
-            ...userData,
-          },
-        },
-      });
-
-      setUserDetailsAvailable(true);
-    };
-
     if (session.data) {
-      getUserData();
-
       // Fetch weather locations
-      appDispatch(
+      dispatch(
         fetchWeatherAlerts({
           // @ts-ignore
           id: session.data?.id as string,
         })
       );
+
+      // Set auth
+      dispatch(
+        authenticate({
+          // @ts-ignore
+          id: session.data?.id,
+        })
+      );
     }
   }, [dispatch, session.data]);
 
-  useEffect(() => {
-    // console.log(user.weatherAlerts);
-    // console.log(user.weatherAlerts);
-  }, [user.weatherAlerts]);
-
-  if (
-    session.status === "loading" ||
-    session.status === "unauthenticated" ||
-    !userDetailsAvailable
-  )
+  if (session.status === "loading")
     return (
       <div className="bg-wb-primary absolute h-screen w-screen text-white">
         <Loader variant="page" />
