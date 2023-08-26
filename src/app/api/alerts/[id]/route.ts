@@ -1,6 +1,6 @@
 import User from "@/models/User";
 import { TLocation, TWeatherAlert, TWeatherAlertTimes } from "@/types/types";
-import addWeatherAlertIds from "@/utils/addWeatherAlertIds";
+// import addWeatherAlertIds from "@/utils/addWeatherAlertIds";
 import connectDB from "@/utils/db";
 import getValidWeatherAlerts from "@/utils/getValidWeatherAlerts";
 import { nanoid } from "@reduxjs/toolkit";
