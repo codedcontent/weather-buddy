@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomButton from "@/components/CustomButton";
 import WeatherAlerts from "@/components/weatherAlerts/WeatherAlerts";
-import { TWeatherAlert, TWeatherAlerts } from "@/types/types";
+import { TWeatherAlert } from "@/types/types";
 import { enqueueSnackbar } from "notistack";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import {
   getWeatherAlertsError,
   getWeatherAlertsStatus,
   resetWeatherAlerts,
-  saveWeatherAlertChanges,
   selectAllWeatherAlerts,
 } from "@/slices/weatherAlertsSlice";
 import Loader from "@/components/Loader";

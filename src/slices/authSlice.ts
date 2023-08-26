@@ -5,20 +5,26 @@ import type { RootState } from "@/app/store";
 export type AuthState = {
   isAuthenticated: boolean;
   id: string;
+  email: string;
 };
 
 const initialState: AuthState = {
   isAuthenticated: false,
   id: "",
+  email: "",
 };
 
 export const authSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    authenticate: (state, action: PayloadAction<{ id: string }>) => {
+    authenticate: (
+      state,
+      action: PayloadAction<{ id: string; email: string }>
+    ) => {
       state.isAuthenticated = true;
       state.id = action.payload.id;
+      state.email = action.payload.email;
     },
     unAuthenticate: (state) => {
       state.isAuthenticated = false;

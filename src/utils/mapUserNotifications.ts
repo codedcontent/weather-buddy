@@ -1,5 +1,6 @@
 import { TNotifications } from "@/types/types";
 
+// Convert the notifications object gotten from db into an object used by the notifications component
 const mapUserNotifications = (data: TNotifications) => {
   const userNotification: any = {};
 

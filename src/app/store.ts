@@ -1,5 +1,7 @@
 import authReducer from "@/slices/authSlice";
 import counterReducer from "@/slices/counterSlice";
+import notificationsReducer from "@/slices/notificationsSlice";
+import subscriptionReducer from "@/slices/subscriptionSlices";
 import weatherAlertsReducer from "@/slices/weatherAlertsSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -8,6 +10,8 @@ export const store = configureStore({
     counter: counterReducer,
     weatherAlerts: weatherAlertsReducer,
     auth: authReducer,
+    notifications: notificationsReducer,
+    subscription: subscriptionReducer,
   },
 });
 

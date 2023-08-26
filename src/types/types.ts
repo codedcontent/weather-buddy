@@ -78,3 +78,21 @@ export type TUserState = {
   notifications: TNotifications;
   subscriptionDetails: TSubscriptionDetails;
 };
+
+export type TNotificationType = {
+  sms: boolean;
+  email: boolean;
+  whatsApp: boolean;
+  pushNotifications: boolean;
+};
+
+export type TSubscriptionOption = {
+  id: number;
+  name: string;
+  description: string;
+  features: string[];
+  badge?: { title: string; color: "primary" | "new" };
+  price: number;
+};
+
+export type TSubscriptionType = "free" | "pro" | "enterprise";

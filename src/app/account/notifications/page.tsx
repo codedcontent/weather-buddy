@@ -3,98 +3,99 @@
 import CustomButton from "@/components/CustomButton";
 import CustomCheckbox from "@/components/CustomCheckbox";
 import Loader from "@/components/Loader";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { selectAuth } from "@/slices/authSlice";
+import {
+  checkNotification,
+  getNotificationsStatus,
+  resetNotification,
+  selectNotifications,
+} from "@/slices/notificationsSlice";
+import { TNotificationType, TNotifications } from "@/types/types";
 import mapUserNotifications from "@/utils/mapUserNotifications";
+import axios from "axios";
 import { useSession } from "next-auth/react";
+import { enqueueSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 
-type NotificationType = {
-  sms: boolean;
-  email: boolean;
-  whatsApp: boolean;
-  pushNotifications: boolean;
-};
-
 const NotificationsPage = () => {
-  const [notifications, setNotifications] = useState<NotificationType | null>(
-    null
-  );
   const [disabled, setDisabled] = useState(false);
 
-  // User session
-  const session = useSession();
+  const auth = useAppSelector(selectAuth);
+  const notifications = useAppSelector(selectNotifications);
+  const notificationsStatus = useAppSelector(getNotificationsStatus);
+  const dispatch = useAppDispatch();
 
-  // Get the users notifications
-  useEffect(() => {
-    // Disable buttons
+  const [notifsTemp, setNotifsTemp] = useState<TNotificationType | null>(null);
+
+  const saveChanges = async () => {
     setDisabled(true);
 
-    const getUserNotifications = async () => {
-      // @ts-ignore
-      const url = `/api/notifications/${session.data?.id}`;
+    const url = `/api/notifications/${auth.id}`;
 
-      try {
-        const resp = await fetch(url, { method: "GET" });
-        const data = await resp.json();
+    console.log(url);
 
-        const userNotifications = mapUserNotifications(data.notifications);
+    try {
+      const update: TNotifications = {
+        email: { enabled: notifications?.email },
+        pushNotifications: { enabled: notifications?.pushNotifications },
+        sms: { enabled: notifications?.sms },
+        whatsApp: { enabled: notifications?.whatsApp },
+      };
 
-        setNotifications(userNotifications);
-        setDisabled(false);
-      } catch (error) {
-        throw new Error(`An error occurred: => ${error}`);
-      }
-    };
+      const resp = await axios.patch(url, { notifications });
+      const data = resp.data;
 
-    getUserNotifications();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      console.log(data);
+    } catch (error: any) {
+      console.log(error);
+
+      enqueueSnackbar(`An error occurred: => ${error.message}`, {
+        variant: "error",
+      });
+    } finally {
+      setDisabled(false);
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    name: string
+    name: keyof TNotificationType
   ) => {
     const isChecked = e.target.checked;
 
-    setNotifications((prev) => ({
-      ...(prev as NotificationType),
-      [name]: isChecked,
-    }));
-  };
-
-  const saveChanges = async () => {
-    // Disable buttons
-    setDisabled(true);
-
-    console.log(notifications);
-
-    try {
-      // @ts-ignore
-      const url = `/api/notifications/${session.data?.id}`;
-      const resp = await fetch(url, {
-        method: "PATCH",
-        body: JSON.stringify({ notifications }),
-      });
-
-      const data = await resp.json();
-      console.log(data);
-    } catch (error) {
-      throw new Error(`An error occurred: => ${error}`);
-    }
-
-    // Enable buttons
-    setDisabled(false);
+    dispatch(
+      checkNotification({
+        isChecked,
+        notificationName: name,
+      })
+    );
   };
 
   const discardChanges = async () => {
-    // @ts-ignore
-    const url = `/api/notifications/${session.data?.id}`;
-    const resp = await fetch(url, { method: "GET" });
-    const data = await resp.json();
-
-    const userNotifications = mapUserNotifications(data.notifications);
-
-    setNotifications(userNotifications);
+    dispatch(
+      resetNotification({ notifications: notifsTemp as TNotificationType })
+    );
   };
+
+  // Store notifications temporarily
+  useEffect(() => {
+    if (!notifsTemp && notifications) {
+      setNotifsTemp(notifications);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Check notifications availability
+  useEffect(() => {
+    if (notificationsStatus === "failed") {
+      enqueueSnackbar("Something went wrong. Try again later.", {
+        variant: "error",
+      });
+    }
+  }, [notificationsStatus]);
+
+  if (notificationsStatus === "pending") return <p>Loading notifications</p>;
 
   return (
     <div className="w-full">

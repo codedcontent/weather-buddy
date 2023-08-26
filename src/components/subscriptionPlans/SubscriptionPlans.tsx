@@ -7,13 +7,17 @@ import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import { UserContext } from "@/context/UserProvider";
 import ErrorOutError from "@/utils/errorOutError";
+import { TSubscriptionOption } from "@/types/types";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { selectAuth } from "@/slices/authSlice";
+import { useRouter } from "next/navigation";
 
-const subscriptions = [
+const subscriptions: TSubscriptionOption[] = [
   {
     id: 1,
-    name: "Free Plan",
+    name: "free plan",
     description:
-      "Enjoy the essentials with our Free Plan, perfect for testing basic Weather Buddy features.",
+      "You get essentials with our Free Plan, perfect for testing out Weather Buddy features.",
     features: [
       "Track weather for 1 location",
       "Receive 1 daily weather alert",
@@ -28,7 +32,7 @@ const subscriptions = [
 
   {
     id: 2,
-    name: "Pro Plan",
+    name: "pro plan",
     description:
       "Stay informed and plan your days effectively with our Pro Plan, offering daily weather updates.",
     features: [
@@ -37,80 +41,49 @@ const subscriptions = [
       "SMS and email notifications",
     ],
     price: 3,
+    badge: {
+      title: "Coming soon",
+      color: "new",
+    },
   },
 
-  {
-    id: 3,
-    name: "Premium Plan",
-    description:
-      "Experience Weather Buddy at its best with our Premium Plan. Unlock exclusive features and benefits.",
-    features: [
-      "Advanced weather insights",
-      "Severe weather alerts",
-      "Customizable notifications",
-    ],
-    badge: {
-      title: "Coming Soon",
-      color: "green",
-    },
-    price: 5,
-  },
+  // {
+  //   id: 3,
+  //   name: "premium plan",
+  //   description:
+  //     "Experience Weather Buddy at its best with our Premium Plan. Unlock exclusive features and benefits.",
+  //   features: [
+  //     "Advanced weather insights",
+  //     "Severe weather alerts",
+  //     "Customizable notifications",
+  //   ],
+  //   badge: {
+  //     title: "Coming Soon",
+  //     color: "green",
+  //   },
+  //   price: 5,
+  // },
 ];
 
 const SubscriptionPlans = () => {
-  const session = useSession();
-  const { user: state, dispatch } = useContext(UserContext);
+  const auth = useAppSelector(selectAuth);
+  const router = useRouter();
 
-  //   const fetcher = (...args: any[]) =>
-  //     // @ts-ignore
-  //     fetch(...args).then((res) => res.json());
-
-  //   // SWR users fetch data
-  //   const { data, mutate, isLoading } = useSWR(
-  //     //   @ts-ignore
-  //     `/api/subscriptions/${session.data?.id}`,
-  //     fetcher
-  //   );
-
-  const [selectedSubscriptionPlan, setSelectedSubscriptionPlan] = useState<
-    number | null
-  >(null);
+  const [selectedSubscriptionPlan, setSelectedSubscriptionPlan] =
+    useState<TSubscriptionOption | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const changeSubscriptionPlan = () => {};
-
-  const cancelSubscriptionChange = async () => {
+  const changeSubscriptionPlan = () => {
     setIsLoading(true);
-    // Cancel the users subscription
-    const url =
-      // @ts-ignore
-      `/api/subscriptions/${state.id}`;
 
-    try {
-      const resp = await fetch(url, {
-        method: "PATCH",
-        body: JSON.stringify("free"),
-      });
+    router.push(`/premium-plan?email=${auth.email}`);
 
-      const data = await resp.json();
+    // const url = `/api/subscriptions/${auth.id}`;
+  };
 
-      console.log(data);
-    } catch (error) {
-      ErrorOutError(error);
-    } finally {
-      setIsLoading(false);
-    }
-
-    // Update subscription details
-    // dispatch({
-    //   type: "CANCEL_SUBSCRIPTION",
-    //   payload: {
-    //     subscription: "standard",
-    //   },
-    // });
-
-    // setSelectedSubscriptionPlan(null);
+  const handleClose = async () => {
+    setSelectedSubscriptionPlan(null);
   };
 
   return (
@@ -132,7 +105,7 @@ const SubscriptionPlans = () => {
           // The user has selected a subscription plan card, hide the ones that weren't selected
           <div>
             {subscriptions
-              .filter((x) => x.id === selectedSubscriptionPlan)
+              .filter((x) => x.id === selectedSubscriptionPlan.id)
               .map((subscription) => (
                 <SubscriptionCard
                   key={subscription.id}
@@ -146,20 +119,21 @@ const SubscriptionPlans = () => {
       </div>
 
       {/* Upgrade & cancel subscription buttons */}
-      {selectedSubscriptionPlan && (
+      {selectedSubscriptionPlan?.id && (
         <div className="flex flex-col w-full gap-4 mt-8">
-          <CustomButton
-            label="Upgrade Subscription Plan"
-            onClick={changeSubscriptionPlan}
-            variant="filled"
-            disabled={isLoading}
-          />
+          {selectedSubscriptionPlan.name === "pro plan" && (
+            <CustomButton
+              label={`Upgrade Subscription to ${selectedSubscriptionPlan.name}`}
+              onClick={changeSubscriptionPlan}
+              variant="filled"
+              disabled={isLoading}
+            />
+          )}
 
           <CustomButton
-            label="Cancel"
-            onClick={cancelSubscriptionChange}
+            label="Close"
+            onClick={handleClose}
             variant="outlined"
-            disabled={isLoading}
           />
         </div>
       )}

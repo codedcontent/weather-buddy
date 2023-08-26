@@ -11,6 +11,8 @@ import Loader from "@/components/Loader";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { fetchWeatherAlerts } from "@/slices/weatherAlertsSlice";
 import { authenticate } from "@/slices/authSlice";
+import { fetchNotifications } from "@/slices/notificationsSlice";
+import { fetchSubscription } from "@/slices/subscriptionSlices";
 
 type AccountLayoutProps = {
   children: React.ReactNode;
@@ -31,21 +33,28 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   // Load the user details
   useEffect(() => {
     if (session.data) {
+      // @ts-ignore
+      const userIdFromSession = session.data?.id as string;
+
       // Fetch weather locations
       dispatch(
         fetchWeatherAlerts({
-          // @ts-ignore
-          id: session.data?.id as string,
+          id: userIdFromSession,
         })
       );
 
       // Set auth
       dispatch(
         authenticate({
-          // @ts-ignore
-          id: session.data?.id,
+          id: userIdFromSession,
+          email: session.data.user?.email as string,
         })
       );
+
+      dispatch(fetchSubscription(userIdFromSession));
+
+      // Fetch user notifications
+      dispatch(fetchNotifications(userIdFromSession));
     }
   }, [dispatch, session.data]);
 

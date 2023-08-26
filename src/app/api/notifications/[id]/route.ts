@@ -89,7 +89,15 @@ export const PATCH = async (request: Request, { params }: Params) => {
         status: httpStatusCodes.OK,
       }
     );
-  } catch (error) {
-    throw new Error(`An error occurred: => ${error}`);
+  } catch (error: any) {
+    // throw new Error(`An error occurred: => ${error}`);
+    console.log(error);
+
+    return new NextResponse(
+      JSON.stringify({ msg: `An error occurred: => ${error.message}` }),
+      {
+        status: httpStatusCodes.INTERNAL_SERVER_ERROR,
+      }
+    );
   }
 };

@@ -38,7 +38,6 @@ export const fetchWeatherAlerts = createAsyncThunk(
     const url = `${WEATHER_ALERTS_URL}/${id}`;
 
     const response = await axios.get(url);
-    // console.log(response.data);
 
     return response.data;
   }

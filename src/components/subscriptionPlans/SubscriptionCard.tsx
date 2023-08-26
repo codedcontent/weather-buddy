@@ -3,27 +3,16 @@
 import { useState, useEffect } from "react";
 import { BiChevronRight } from "react-icons/bi";
 import { AiFillCheckCircle } from "react-icons/ai";
-
-type Subscription = {
-  id: number;
-  name: string;
-  description: string;
-  features: string[];
-  price: number;
-  badge?: {
-    title: string;
-    color: string;
-  };
-  empTitle?: string;
-  empColor?: string;
-};
+import { TSubscriptionOption } from "@/types/types";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { selectSubscription } from "@/slices/subscriptionSlices";
 
 type SubscriptionCardProps = {
-  subscription: Subscription;
+  subscription: TSubscriptionOption;
   setSelectedSubscriptionPlan: React.Dispatch<
-    React.SetStateAction<number | null>
+    React.SetStateAction<TSubscriptionOption | null>
   >;
-  selectedSubscriptionPlan: number | null;
+  selectedSubscriptionPlan: TSubscriptionOption | null;
 };
 
 const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
@@ -31,29 +20,35 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   setSelectedSubscriptionPlan,
   selectedSubscriptionPlan,
 }) => {
+  const userSubscription = useAppSelector(selectSubscription);
+
   const [expanded, setExpanded] = useState(false);
 
   // Handle what happens when the users clicks a subscription plan card
   const handleCardClick = () => {
     setExpanded(true);
-    setSelectedSubscriptionPlan(subscription.id);
+    setSelectedSubscriptionPlan(subscription);
   };
 
   useEffect(() => {
-    setExpanded(selectedSubscriptionPlan ? true : false);
+    setExpanded(selectedSubscriptionPlan?.id ? true : false);
   }, [selectedSubscriptionPlan]);
+
+  // Subscription status
 
   return (
     <div className="w-full">
       {!expanded && (
         <div
-          className="w-full flex items-center pb-4 pt-6 transition-all duration-500 hover:scale-105 cursor-pointer"
+          className="w-full flex items-center pb-4 pt-6 transition-all duration-300 hover:scale-105 cursor-pointer"
           onClick={handleCardClick}
         >
           <div className="w-full">
             <div className="flex gap-2 items-center w-max">
+              {/* Plan name */}
               <p className="font-bold capitalize">{subscription.name}</p>
 
+              {/* Badge */}
               {subscription.badge?.title && (
                 <p
                   className={`font-black uppercase text-[10px] ${

@@ -30,6 +30,13 @@ export const GET = async (request: Request, { params }: Params) => {
     // Get the users subscription details
     const subscriptionPlan = foundUser.subscriptionPlan;
     const subscriptionExpiryDate = foundUser.subscriptionExpiryDate;
+
+    return new NextResponse(
+      JSON.stringify({
+        plan: subscriptionPlan,
+        exp: subscriptionExpiryDate,
+      })
+    );
   } catch (error) {
     ErrorOutError(error);
   }
