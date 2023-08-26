@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import connectDB from "@/utils/db";
 
-export default NextAuth({
+const handler = NextAuth({
   pages: {
     error: "/login",
     // signIn: "/login",
@@ -71,4 +71,4 @@ export default NextAuth({
   },
 });
 
-// export { handler as POST, handler as GET };
+export { handler as POST, handler as GET };
