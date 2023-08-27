@@ -19,7 +19,7 @@ const CustomButton = ({
   }`;
   return (
     <button
-      className={`${buttonStyles} duration-200`}
+      className={`${buttonStyles} duration-200 lg:text-base text-sm`}
       onClick={onClick}
       {...rest}
       disabled={loading || rest.disabled}

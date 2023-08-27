@@ -12,9 +12,7 @@ import {
   selectNotifications,
 } from "@/slices/notificationsSlice";
 import { TNotificationType, TNotifications } from "@/types/types";
-import mapUserNotifications from "@/utils/mapUserNotifications";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { enqueueSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 
@@ -32,8 +30,6 @@ const NotificationsPage = () => {
     setDisabled(true);
 
     const url = `/api/notifications/${auth.id}`;
-
-    console.log(url);
 
     try {
       const update: TNotifications = {
@@ -100,15 +96,17 @@ const NotificationsPage = () => {
   return (
     <div className="w-full">
       {/* Page title */}
-      <p className="text-xl font-semibold capitalize px-8">Notifications</p>
+      <p className="text-xl font-semibold capitalize lg:px-8 px-6">
+        Notifications
+      </p>
 
       {/* <-- --> */}
-      <div className="pl-8 my-6">
+      <div className="lg:pl-8 pl-0 lg:my-6 my-4">
         <hr className="border-wb-silver" />
       </div>
 
       {/* Page description */}
-      <div className="px-8">
+      <div className="lg:px-8 px-6">
         <p className="font-semibold">Notification preferences</p>
         <p className="font-light text-sm">
           Choose the various ways you would like to receive your weather alerts
@@ -121,7 +119,7 @@ const NotificationsPage = () => {
           <Loader variant="action" />
         </div>
       ) : (
-        <div className="px-8 mt-8 grid grid-cols-2 gap-y-4">
+        <div className="lg:px-8 px-6 mt-8 grid lg:grid-cols-2 grid-cols-1 gap-y-4">
           <CustomCheckbox
             label="Email alerts"
             checked={notifications?.email}
@@ -157,7 +155,7 @@ const NotificationsPage = () => {
       )}
 
       {/* <-- --> */}
-      <div className="pl-8 mt-14 mb-6">
+      <div className="mt-14 lg:pl-8 pl-0 lg:my-6 my-4">
         <hr className="border-wb-silver" />
       </div>
 

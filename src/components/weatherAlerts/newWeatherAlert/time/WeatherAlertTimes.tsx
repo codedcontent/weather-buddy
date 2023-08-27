@@ -48,11 +48,11 @@ const WeatherAlertTimesPicker = ({ times, id }: WeatherAlertTimesProps) => {
   useClickAway(selectRef, handleClickAway);
 
   return (
-    <div className="w-max">
+    <div className="lg:w-max w-full">
       <div className="flex gap-4 items-start">
         <label className="block text-white mb-2 capitalize text-sm">Time</label>
 
-        <BsFillPatchQuestionFill className="text-xl" />
+        {/* <BsFillPatchQuestionFill className="text-xl" /> */}
       </div>
 
       {times.length === 0 ? (

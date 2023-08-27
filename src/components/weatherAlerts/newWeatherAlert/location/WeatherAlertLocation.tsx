@@ -55,7 +55,7 @@ const WeatherAlertLocationPicker = ({
   };
 
   return (
-    <div className="mb-4 w-full flex-1">
+    <div className="lg:mb-4 mb-2 w-full flex-1">
       <div className="flex gap-4 items-start">
         <label className="block text-white mb-2 capitalize text-sm">
           Location

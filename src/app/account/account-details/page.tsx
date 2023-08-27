@@ -43,7 +43,6 @@ const AccountDetailsPage = () => {
     setSubmitting(true);
 
     try {
-      // @ts-ignore
       await fetch(`/api/users/${id}`, {
         method: "PATCH",
         body: JSON.stringify({ accountDetails: values }),
@@ -70,12 +69,12 @@ const AccountDetailsPage = () => {
       <p className="text-xl font-semibold capitalize px-8">Account details</p>
 
       {/* Horizontal line */}
-      <div className="pl-8 my-6">
+      <div className="lg:pl-8 pl-0 lg:my-6 my-4">
         <hr className="border-wb-silver" />
       </div>
 
       {/* Page description */}
-      <div className="px-8">
+      <div className="lg:px-8 px-5">
         <p className="font-semibold">Personal information</p>
         <p className="font-light text-sm">
           Update your personal information here
@@ -83,13 +82,13 @@ const AccountDetailsPage = () => {
       </div>
 
       {/* Updatable account details */}
-      <div className="px-8">
+      <div className="lg:px-8 px-5">
         <form
           className="flex flex-col gap-y-0 mt-6 gap-2"
           onSubmit={handleSubmit}
         >
           {/* First & Last name */}
-          <div className="flex w-full gap-6">
+          <div className="flex lg:flex-row flex-col w-full lg:gap-6">
             <CustomTextField
               label="First Name"
               {...getFieldProps("firstName")}
@@ -126,21 +125,21 @@ const AccountDetailsPage = () => {
         </form>
 
         {/* Change password */}
-        <Link
+        {/* <Link
           href={"/account/reset-password"}
           className="text-sm underline font-light mt-6"
         >
           Change password?
-        </Link>
+        </Link> */}
       </div>
 
       {/* Horizontal line */}
-      <div className="pl-8 mt-14 mb-6">
+      <div className="lg:pl-8 pl-0 lg:my-6 my-4">
         <hr className="border-wb-silver" />
       </div>
 
       {/* Save/Discard buttons */}
-      <div className="flex w-full gap-4 px-8">
+      <div className="flex w-full gap-4 lg:px-8">
         <CustomButton
           label="Discard Changes"
           variant="outlined"

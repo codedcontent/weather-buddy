@@ -80,7 +80,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
             </p>
           </div>
 
-          <ul className="list-none list-inside space-y-2">
+          <ul className="list-none list-inside space-y-2 mt-2">
             {subscription.features.map((feature, index) => (
               <li key={index} className=" flex gap-2">
                 <AiFillCheckCircle className="text-lg text-white" />

@@ -97,7 +97,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
         <div className="flex w-full h-full">
           <div className="lg:w-1/2 w-[90%] lg:block hidden border-r border-r-wb-silver h-full">
             <div className="py-8 pl-8">
-              {/* <p className="text-xl font-semibold">Account Options</p> */}
+              <p className="text-xl font-semibold">Account Options</p>
 
               <div className="mt-10 space-y-12">
                 {/* <div className="w-[80%]">

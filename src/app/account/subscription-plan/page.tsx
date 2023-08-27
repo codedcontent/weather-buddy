@@ -35,7 +35,7 @@ const SubscriptionPlanPage = () => {
       </p>
 
       {/* Horizontal line */}
-      <div className="pl-8 my-6">
+      <div className="lg:pl-8 pl-0 lg:my-6 my-4">
         <hr className="border-wb-silver" />
       </div>
 

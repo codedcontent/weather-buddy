@@ -36,7 +36,7 @@ const AccountOptions = () => {
         return (
           <AccountOption
             key={index}
-            title={link.name}
+            title={link.name.toLowerCase()}
             href={link.href}
             subtitle={link.subtitle}
             isActive={isActive}
