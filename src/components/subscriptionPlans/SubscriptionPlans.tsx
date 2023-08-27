@@ -1,12 +1,8 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import CustomButton from "../CustomButton";
 import SubscriptionCard from "./SubscriptionCard";
-import useSWR from "swr";
-import { useSession } from "next-auth/react";
-import { UserContext } from "@/context/UserProvider";
-import ErrorOutError from "@/utils/errorOutError";
 import { TSubscriptionOption } from "@/types/types";
 import { useAppSelector } from "@/hooks/redux-hooks";
 import { selectAuth } from "@/slices/authSlice";
