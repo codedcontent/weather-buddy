@@ -4,11 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import AccountOption from "./accountOptions/AccountOption";
 import { BiChevronRight } from "react-icons/bi";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { MdBrightness6, MdUpgrade } from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
+import CustomButton from "./CustomButton";
+import { signOut } from "next-auth/react";
 
 const navLinks = [
   {
@@ -90,7 +91,7 @@ const Header = () => {
       </div>
 
       {menuExpanded && (
-        <div className="lg:hidden flex px-5 flex-1 justify-center items-center">
+        <div className="lg:hidden flex flex-col px-5 flex-1 justify-evenly items-center">
           <div className="flex flex-col gap-4">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
@@ -147,6 +148,8 @@ const Header = () => {
               );
             })}
           </div>
+
+          <CustomButton label="LOGOUT" variant="filled" onClick={signOut} />
         </div>
       )}
     </div>
