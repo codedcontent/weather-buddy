@@ -11,10 +11,10 @@ const FeatureCard = ({ feature }: Props) => {
   const { name, description } = feature;
 
   return (
-    <div className="text-white p-5 space-y-3 bg-wb-primary rounded-xl">
-      <p className="font-bold text-xl">{name}</p>
+    <div className="text-white p-5 lg:space-y-3 space-y-1 bg-wb-primary rounded-xl">
+      <p className="font-bold lg:text-xl text-base">{name}</p>
 
-      <p className="font-light">{description}</p>
+      <p className="font-extralight lg:text-base text-sm">{description}</p>
     </div>
   );
 };

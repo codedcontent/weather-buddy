@@ -13,7 +13,7 @@ module.exports = {
       colors: {
         "wb-bgColor": "#181620",
         "wb-boardColor": "#252836",
-        "wb-secondary": "#226FEE",
+        "wb-secondary": "#34B3F1",
         "wb-primary": "#525298",
         "wb-success-green": "#5ADD0A",
         "wb-danger-red": "#FF0302",

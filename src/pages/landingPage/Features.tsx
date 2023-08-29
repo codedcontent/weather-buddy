@@ -21,27 +21,24 @@ const features = [
 
 const Features = () => {
   return (
-    <div
-      className="flex flex-col h-screen justify-center items-center w-full gap-20"
-      //   style={{ minHeight: "calc(100vh - 96px)" }}
-    >
+    <div className="flex flex-col min-h-screen justify-center items-center w-full lg:gap-20 gap-5">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-wb-primary">
+        <h1 className="lg:text-4xl text-2xl font-bold text-wb-primary">
           Weather Buddy Features
         </h1>
-        <p className="text-sm">
+        <p className="lg:text-sm text-xs">
           Discover the Extraordinary Features of Weather Buddy
         </p>
       </div>
 
-      <div className="w-full flex justify-between items-center gap-10">
-        <div className="grid grid-cols-1 w-1/2 gap-4">
+      <div className="w-full flex lg:flex-row flex-col justify-between items-center lg:gap-10 gap-0">
+        <div className="grid grid-cols-1 lg:w-1/2 w-full lg:gap-4 gap-2">
           {features.map((feature, index) => (
             <FeatureCard key={index} feature={feature} />
           ))}
         </div>
 
-        <div className="w-1/2">
+        <div className="lg:w-1/2 w-full">
           <Image
             src="/Team work-bro 1.svg"
             width={500}

@@ -1,6 +1,8 @@
 import Features from "./Features";
 import Header from "./Header";
 import HomePage from "./HomePage";
+import HowItWorks from "./HowItWorks";
+import UseCase from "./UseCase";
 
 const LandingPage = () => {
   return (
@@ -10,6 +12,10 @@ const LandingPage = () => {
       <HomePage />
 
       <Features />
+
+      <UseCase />
+
+      <HowItWorks />
     </div>
   );
 };

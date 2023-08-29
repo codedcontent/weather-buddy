@@ -1,19 +1,20 @@
 import CustomButton from "@/components/CustomButton";
 import Link from "next/link";
+import { AiOutlineMenu } from "react-icons/ai";
 
 const linkStyles =
   "font-light text-wb-bgColor hover:text-wb-primary hover:font-medium";
 
 const Header = () => {
   return (
-    <div className="w-full h-24 flex justify-center items-center">
+    <div className="w-full h-24 flex lg:justify-center justify-between items-center">
       {/* Logo */}
 
       <Link href="#home">
         <p className="font-black text-xl text-wb-primary">Weather Buddy</p>
       </Link>
 
-      <div className="flex-1 flex justify-center items-center w-full gap-10">
+      <div className="flex-1 lg:flex hidden justify-center items-center w-full gap-10">
         <Link href="#features" className={`${linkStyles}`}>
           Features
         </Link>
@@ -28,7 +29,7 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="flex gap-6">
+      <div className="lg:flex hidden gap-6">
         <Link
           href="login"
           target="_blank"
@@ -44,6 +45,10 @@ const Header = () => {
         >
           Register
         </Link>
+      </div>
+
+      <div className="lg:hidden block text-2xl">
+        <AiOutlineMenu />
       </div>
     </div>
   );
