@@ -7,9 +7,8 @@ const linkStyles =
 
 const Header = () => {
   return (
-    <div className="w-full h-24 flex lg:justify-center justify-between items-center">
+    <header className="w-full h-24 flex lg:justify-center justify-between items-center">
       {/* Logo */}
-
       <Link href="#home">
         <p className="font-black text-xl text-wb-primary">Weather Buddy</p>
       </Link>
@@ -50,7 +49,7 @@ const Header = () => {
       <div className="lg:hidden block text-2xl">
         <AiOutlineMenu />
       </div>
-    </div>
+    </header>
   );
 };
 

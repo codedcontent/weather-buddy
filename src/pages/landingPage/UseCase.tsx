@@ -32,6 +32,12 @@ const UseCase = () => {
       </div>
 
       <div className="w-full flex lg:flex-row flex-col-reverse justify-between items-center lg:gap-10 gap-0">
+        <div className="grid grid-cols-1 lg:w-1/2 w-full lg:gap-4 gap-2">
+          {useCases.map((useCase, index) => (
+            <UseCaseCard key={index} useCase={useCase} />
+          ))}
+        </div>
+
         <div className="lg:w-1/2 w-full">
           <Image
             src="/Nature benefits-rafiki 1.svg"
@@ -40,12 +46,6 @@ const UseCase = () => {
             className="w-full"
             alt="Weather Buddy Alerts"
           />
-        </div>
-
-        <div className="grid grid-cols-1 lg:w-1/2 w-full lg:gap-4 gap-2">
-          {useCases.map((useCase, index) => (
-            <UseCaseCard key={index} useCase={useCase} />
-          ))}
         </div>
       </div>
     </div>

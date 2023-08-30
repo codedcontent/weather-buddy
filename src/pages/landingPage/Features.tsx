@@ -32,12 +32,6 @@ const Features = () => {
       </div>
 
       <div className="w-full flex lg:flex-row flex-col justify-between items-center lg:gap-10 gap-0">
-        <div className="grid grid-cols-1 lg:w-1/2 w-full lg:gap-4 gap-2">
-          {features.map((feature, index) => (
-            <FeatureCard key={index} feature={feature} />
-          ))}
-        </div>
-
         <div className="lg:w-1/2 w-full">
           <Image
             src="/Team work-bro 1.svg"
@@ -46,6 +40,12 @@ const Features = () => {
             className="w-full"
             alt="Weather Buddy Alerts"
           />
+        </div>
+
+        <div className="grid grid-cols-1 lg:w-1/2 w-full lg:gap-4 gap-2">
+          {features.map((feature, index) => (
+            <FeatureCard key={index} feature={feature} />
+          ))}
         </div>
       </div>
     </div>

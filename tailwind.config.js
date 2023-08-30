@@ -18,6 +18,7 @@ module.exports = {
         "wb-success-green": "#5ADD0A",
         "wb-danger-red": "#FF0302",
         "wb-silver": "#363846",
+        "wb-gray": "#7C7C7C",
       },
     },
   },
