@@ -6,6 +6,7 @@ const HomePage = () => {
     <div
       className="w-full flex lg:flex-row flex-col justify-between items-center lg:gap-10 gap-0"
       style={{ minHeight: "calc(100vh - 96px)" }}
+      id="#"
     >
       <div className="flex flex-col lg:gap-y-6 gap-y-2 lg:w-1/2 w-full">
         <h1 className="lg:text-6xl text-4xl font-bold text-wb-primary">

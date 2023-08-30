@@ -43,12 +43,17 @@ const subscriptionPlans = [
   // },
 ];
 
+// TODO: Make this responsive
+
 const SubscriptionPlans = () => {
   return (
-    <div className="flex flex-col min-h-screen justify-center items-center w-full lg:gap-20 gap-5">
+    <div
+      className="flex flex-col min-h-screen justify-center items-center w-full lg:gap-20 gap-5 mt-4"
+      id="pricing"
+    >
       <div className="text-center">
         <h1 className="lg:text-4xl text-2xl font-bold text-wb-primary">
-          Subscription Plans
+          Pricing
         </h1>
         <p className="lg:text-sm text-xs">
           We have some options for you to pick from

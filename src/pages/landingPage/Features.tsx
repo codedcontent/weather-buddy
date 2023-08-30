@@ -21,7 +21,10 @@ const features = [
 
 const Features = () => {
   return (
-    <div className="flex flex-col min-h-screen justify-center items-center w-full lg:gap-20 gap-5">
+    <div
+      className="flex flex-col min-h-screen justify-center items-center w-full lg:gap-20 gap-5 mt-4"
+      id="features"
+    >
       <div className="text-center">
         <h1 className="lg:text-4xl text-2xl font-bold text-wb-primary">
           Weather Buddy Features

@@ -14,7 +14,7 @@ type Props = {
 const SubPlan = ({ plan }: Props) => {
   const { description, features, name, price } = plan;
   return (
-    <div className="w-full space-y-4 items-center pb-4 pt-6 transition-all duration-300 hover:scale-105 cursor-pointer bg-wb-primary p-5 rounded-2xl text-white">
+    <div className="w-full space-y-4 items-center pb-4 pt-6 transition-all duration-300 lg:hover:scale-105 bg-wb-primary p-5 rounded-2xl text-white">
       <div className="flex justify-between items-center w-full">
         {/* Plan name */}
         <p className="font-bold text-lg capitalize">{name} Plan</p>
@@ -34,8 +34,12 @@ const SubPlan = ({ plan }: Props) => {
         ))}
       </ul>
 
-      <div className="w-full h-max text-center border border-white py-2 rounded-full">
-        <Link href={`/checkout?plan=${name}`}>Choose Plan</Link>
+      <div>
+        <Link href={`/checkout?plan=${name}`}>
+          <p className="text-center border border-white py-2 rounded-full cursor-pointer w-full">
+            Choose Plan
+          </p>
+        </Link>
       </div>
     </div>
   );
