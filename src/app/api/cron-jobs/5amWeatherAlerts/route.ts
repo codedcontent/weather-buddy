@@ -89,7 +89,7 @@ const generateEmailListInfo = async (users: any[]) => {
   return emailList;
 };
 
-export const GET = async () => {
+export const POST = async () => {
   const usersWith5AMAlerts = await getUserWith5amWeatherAlerts();
 
   const emailList = await generateEmailListInfo(usersWith5AMAlerts);
