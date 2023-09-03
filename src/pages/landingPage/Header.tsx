@@ -42,7 +42,7 @@ const Header = () => {
             target="_blank"
             className="px-12 py-1.5 border bg-wb-primary rounded-2xl text-white text-sm"
           >
-            <p className="wmaxfull">Register</p>
+            <p className="w-max">Register</p>
           </Link>
         </div>
       </div>

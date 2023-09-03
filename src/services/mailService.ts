@@ -1,11 +1,13 @@
 import nodemailer from "nodemailer";
-//-----------------------------------------------------------------------------
-export const sendMail = async (
-  subject: string,
-  toEmail: string,
-  otpText: string
-) => {
-  var transporter = nodemailer.createTransport({
+
+type Props = {
+  subject: string;
+  toEmail: string;
+  message: string;
+};
+
+export const sendMail = async ({ message, subject, toEmail }: Props) => {
+  const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
       user: process.env.NODEMAILER_EMAIL,
@@ -13,19 +15,24 @@ export const sendMail = async (
     },
   });
 
-  var mailOptions = {
+  const mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
     to: toEmail,
     subject: subject,
-    text: otpText,
+    html: message,
   };
 
-  transporter.sendMail(mailOptions, function (error: any, info: any) {
-    if (error) {
-      throw new Error(error);
-    } else {
-      console.log("Email Sent");
-      return true;
-    }
-  });
+  try {
+    const sendMailInfo = await transporter.sendMail(mailOptions);
+
+    return {
+      status: true,
+      data: sendMailInfo.response,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      error,
+    };
+  }
 };
