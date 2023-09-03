@@ -133,14 +133,21 @@ export const GET = async () => {
         // TODO: Do some cleanup here
       }
     }
+
+    return new NextResponse(
+      JSON.stringify({
+        status: true,
+        msg: "Cron Job completed",
+      })
+    );
   } catch (error: any) {
     console.log(error.message);
-  }
 
-  return new NextResponse(
-    JSON.stringify({
-      status: true,
-      msg: "Cron Job completed",
-    })
-  );
+    return new NextResponse(
+      JSON.stringify({
+        status: false,
+        msg: error.message,
+      })
+    );
+  }
 };
