@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Link from "next/link";
 import CustomTextField from "@/components/CustomTextField";
 import { useFormik } from "formik";
@@ -8,12 +8,19 @@ import CustomButton from "@/components/CustomButton";
 import accountDetailsSchema from "@/schemas/accountDetailsSchema";
 import { UserContext } from "@/context/UserProvider";
 import ErrorOutError from "@/utils/errorOutError";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { getUserError, getUserStatus, selectUser } from "@/slices/userSlice";
+import { TAccountDetails } from "@/types/types";
+import { enqueueSnackbar } from "notistack";
+import Loader from "@/components/Loader";
+import { selectAuth } from "@/slices/authSlice";
 
 const AccountDetailsPage = () => {
-  const {
-    user: { accountDetails, id },
-    dispatch,
-  } = useContext(UserContext);
+  const user = useAppSelector(selectUser);
+  const auth = useAppSelector(selectAuth);
+
+  const userStatus = useAppSelector(getUserStatus);
+  const userError = useAppSelector(getUserError);
 
   const {
     values,
@@ -25,7 +32,7 @@ const AccountDetailsPage = () => {
     setSubmitting,
     resetForm,
   } = useFormik({
-    initialValues: accountDetails,
+    initialValues: user as TAccountDetails,
     onSubmit: () => {},
     validationSchema: accountDetailsSchema,
     enableReinitialize: true,
@@ -43,18 +50,18 @@ const AccountDetailsPage = () => {
     setSubmitting(true);
 
     try {
-      await fetch(`/api/users/${id}`, {
+      await fetch(`/api/users/${auth.id}`, {
         method: "PATCH",
-        body: JSON.stringify({ accountDetails: values }),
+        body: JSON.stringify(values),
       });
 
       // Update the user
-      dispatch({
-        type: "UPDATE_ACCOUNT_DETAILS",
-        payload: {
-          accountDetails: values,
-        },
-      });
+      // dispatch({
+      //   type: "UPDATE_ACCOUNT_DETAILS",
+      //   payload: {
+      //     accountDetails: values,
+      //   },
+      // });
     } catch (error) {
       ErrorOutError(error);
     } finally {
@@ -62,6 +69,15 @@ const AccountDetailsPage = () => {
       setSubmitting(false);
     }
   };
+
+  // Check weather alerts status
+  useEffect(() => {
+    if (userStatus === "failed") {
+      enqueueSnackbar(userError, { variant: "error" });
+    }
+  }, [userError, userStatus]);
+
+  if (userStatus === "pending") return <Loader variant="action" />;
 
   return (
     <div className="w-full">

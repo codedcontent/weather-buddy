@@ -14,6 +14,7 @@ import { authenticate } from "@/slices/authSlice";
 import { fetchNotifications } from "@/slices/notificationsSlice";
 import { fetchSubscription } from "@/slices/subscriptionSlices";
 import Header from "@/components/Header";
+import { fetchUser } from "@/slices/userSlice";
 
 type AccountLayoutProps = {
   children: React.ReactNode;
@@ -24,7 +25,6 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // TODO: Protect the account route
   useEffect(() => {
     if (session.status === "unauthenticated") {
       router.replace("/login");
@@ -52,10 +52,14 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
         })
       );
 
+      // Fetch user subscription
       dispatch(fetchSubscription(userIdFromSession));
 
       // Fetch user notifications
       dispatch(fetchNotifications(userIdFromSession));
+
+      // Fetch user notifications
+      dispatch(fetchUser(userIdFromSession));
     }
   }, [dispatch, session.data]);
 

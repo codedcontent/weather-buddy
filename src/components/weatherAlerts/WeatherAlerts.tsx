@@ -5,13 +5,23 @@ import {
   addNewWeatherAlert,
   selectAllWeatherAlerts,
 } from "@/slices/weatherAlertsSlice";
+import { selectSubscription } from "@/slices/subscriptionSlices";
+import { enqueueSnackbar } from "notistack";
 
 const WeatherAlerts = () => {
-  const weatherAlerts = useAppSelector(selectAllWeatherAlerts);
   const dispatch = useAppDispatch();
 
+  const weatherAlerts = useAppSelector(selectAllWeatherAlerts);
+  const subscriptionInfo = useAppSelector(selectSubscription);
+
   const handleAddNewWeatherAlert = () => {
-    dispatch(addNewWeatherAlert());
+    if (weatherAlerts.length < 1) {
+      dispatch(addNewWeatherAlert());
+    } else {
+      enqueueSnackbar("Too track more locations, upgrade to a pro plan", {
+        variant: "warning",
+      });
+    }
   };
 
   return (
