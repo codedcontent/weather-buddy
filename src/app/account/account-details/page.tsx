@@ -8,8 +8,13 @@ import CustomButton from "@/components/CustomButton";
 import accountDetailsSchema from "@/schemas/accountDetailsSchema";
 import { UserContext } from "@/context/UserProvider";
 import ErrorOutError from "@/utils/errorOutError";
-import { useAppSelector } from "@/hooks/redux-hooks";
-import { getUserError, getUserStatus, selectUser } from "@/slices/userSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import {
+  getUserError,
+  getUserStatus,
+  selectUser,
+  updateUserDetails,
+} from "@/slices/userSlice";
 import { TAccountDetails } from "@/types/types";
 import { enqueueSnackbar } from "notistack";
 import Loader from "@/components/Loader";
@@ -21,6 +26,8 @@ const AccountDetailsPage = () => {
 
   const userStatus = useAppSelector(getUserStatus);
   const userError = useAppSelector(getUserError);
+
+  const dispatch = useAppDispatch();
 
   const {
     values,
@@ -56,12 +63,7 @@ const AccountDetailsPage = () => {
       });
 
       // Update the user
-      // dispatch({
-      //   type: "UPDATE_ACCOUNT_DETAILS",
-      //   payload: {
-      //     accountDetails: values,
-      //   },
-      // });
+      dispatch(updateUserDetails(values));
     } catch (error) {
       ErrorOutError(error);
     } finally {
