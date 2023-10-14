@@ -23,7 +23,8 @@ const HomePage = () => {
 
         <div className="h-max w-max mt-4">
           <Link
-            href="register"
+            // href="register"
+            href="https://weather-buddy-self.vercel.app/"
             target="_blank"
             className="px-6 py-3 border bg-wb-primary rounded-full text-white text-sm"
           >

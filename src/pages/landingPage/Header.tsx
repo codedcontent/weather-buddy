@@ -6,7 +6,7 @@ const linkStyles =
 
 const Header = () => {
   return (
-    <header className="w-full lg:h-24 h-16 flex lg:justify-center justify-between items-center bg-white">
+    <header className="w-full lg:h-24 h-16 flex lg:justify-center justify-between items-center bg-white px-10">
       {/* Logo */}
       <Link href="#">
         <p className="font-black text-xl text-wb-primary">Weather Buddy</p>
