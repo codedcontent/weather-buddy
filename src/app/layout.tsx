@@ -13,7 +13,7 @@ const inter = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Home | Weather Buddy",
+  title: "Weather Buddy | Stay Ahead of Mother Nature",
   description:
     "Welcome to Weather Buddy - Your Ultimate Weather Alerting and Recommendation App. Stay ahead of the elements with real-time weather alerts tailored to your location. From rainstorms to sunny days, Weather Buddy keeps you informed and safe. Get personalized weather recommendations that guide your plans, whether it's a weekend getaway or daily commute. Experience weather confidence like never before with Weather Buddy!",
 };
