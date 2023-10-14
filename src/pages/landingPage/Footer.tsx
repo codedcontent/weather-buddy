@@ -33,19 +33,19 @@ const Footer = () => {
 
             {/* Links */}
             <div className="flex flex-col gap-2">
-              <Link href="/account">
+              <Link href="">
                 <p className="font-light text-sm text-wb-gray hover:underline">
                   Account
                 </p>
               </Link>
 
-              <Link href="/account/weather-alerts">
+              <Link href="">
                 <p className="font-light text-sm text-wb-gray hover:underline">
                   Weather Alerts
                 </p>
               </Link>
 
-              <Link href="/account/notifications">
+              <Link href="">
                 <p className="font-light text-sm text-wb-gray hover:underline">
                   Alert Preferences
                 </p>
@@ -114,13 +114,19 @@ const Footer = () => {
 
             {/* Links */}
             <div className="flex flex-col gap-2">
-              <p className="font-light text-sm text-wb-gray">
+              <a
+                href={"mailto:weatherbuddy8@gmail.com"}
+                className="font-light text-sm text-wb-gray"
+              >
                 weatherbuddy8@gmail.com
-              </p>
+              </a>
 
-              <p className="font-light text-sm text-wb-gray">
-                +234 902 514 5332
-              </p>
+              <a
+                href={"tel:+447780103760"}
+                className="font-light text-sm text-wb-gray"
+              >
+                +44 7780 103760
+              </a>
             </div>
           </div>
         </div>
