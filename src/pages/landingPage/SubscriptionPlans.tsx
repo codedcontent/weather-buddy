@@ -14,17 +14,17 @@ const subscriptionPlans = [
     ],
     price: 0,
   },
-  {
-    name: "Standard",
-    description:
-      "Stay informed and plan your days effectively with our Pro Plan, offering daily weather updates.",
-    features: [
-      "Track 5 locations",
-      "2 weather alerts and recommendations daily.",
-      "Alert channel → Email alerts + WhatsApp + SMS",
-    ],
-    price: 9.99,
-  },
+  // {
+  //   name: "Standard",
+  //   description:
+  //     "Stay informed and plan your days effectively with our Pro Plan, offering daily weather updates.",
+  //   features: [
+  //     "Track 5 locations",
+  //     "2 weather alerts and recommendations daily.",
+  //     "Alert channel → Email alerts + WhatsApp + SMS",
+  //   ],
+  //   price: 9.99,
+  // },
   // {
   //   id: 3,
   //   name: "premium plan",

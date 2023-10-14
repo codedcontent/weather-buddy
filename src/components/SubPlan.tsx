@@ -35,7 +35,7 @@ const SubPlan = ({ plan }: Props) => {
       </ul>
 
       <div>
-        <Link href={`/checkout?plan=${name}`}>
+        <Link href={`/checkout?plan=${name}`} target="_blank">
           <p className="text-center border border-white py-2 rounded-full cursor-pointer w-full">
             Choose Plan
           </p>

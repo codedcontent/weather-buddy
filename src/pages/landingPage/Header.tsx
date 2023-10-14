@@ -6,7 +6,7 @@ const linkStyles =
 
 const Header = () => {
   return (
-    <header className="w-full lg:h-24 h-16 flex lg:justify-center justify-between items-center sticky top-0 left-0 bg-white">
+    <header className="w-full lg:h-24 h-16 flex lg:justify-center justify-between items-center bg-white">
       {/* Logo */}
       <Link href="#">
         <p className="font-black text-xl text-wb-primary">Weather Buddy</p>
@@ -30,7 +30,8 @@ const Header = () => {
 
         <div className="flex gap-6 w-max">
           <Link
-            href="login"
+            // href="login"
+            href="https://weather-buddy.ck.page/exclusive"
             target="_blank"
             className="px-12 py-1.5 border border-wb-primary rounded-2xl text-wb-primary text-sm"
           >
@@ -38,7 +39,8 @@ const Header = () => {
           </Link>
 
           <Link
-            href="register"
+            // href="register"
+            href="https://weather-buddy.ck.page/exclusive"
             target="_blank"
             className="px-12 py-1.5 border bg-wb-primary rounded-2xl text-white text-sm"
           >
