@@ -17,12 +17,12 @@ const RegisterPage = () => {
   console.log(session);
 
   const registerFormInitialValues: RegisterFormProps = {
-    firstName: "Ogechukwu",
-    lastName: "Mephors",
-    email: "test@gmail.com",
-    phoneNumber: "08165739388",
-    password: "password",
-    confirmPassword: "password",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    confirmPassword: "",
   };
 
   const handleFormSubmit = async (values: RegisterFormProps) => {
