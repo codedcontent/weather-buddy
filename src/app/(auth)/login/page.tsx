@@ -23,8 +23,8 @@ const LoginPage = () => {
   }, [router, status]);
 
   const loginFormInitialValues: LoginFormProps = {
-    email: "test@gmail.com",
-    password: "password",
+    email: "",
+    password: "",
   };
 
   // Handle what happens when the user submits the form and it's values are validated
