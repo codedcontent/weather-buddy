@@ -42,7 +42,9 @@ const Header = () => {
   const MenuOverlay = () => {
     return (
       <div className="lg:hidden flex justify-between items-center w-full border-b border-b-wb-silver text-center px-6 py-4 mb-6">
-        <p className="text-lg font-bold">Weather Buddy</p>
+        <Link href="/account" className="text-lg font-bold">
+          Weather Buddy
+        </Link>
 
         <div
           className="text-xl"
@@ -67,7 +69,9 @@ const Header = () => {
     >
       {/* Menu Nav */}
       <div className="w-full flex justify-between items-center mb-6 border-b border-b-wb-silver px-6 py-4">
-        <p className="text-lg font-bold">Weather Buddy</p>
+        <Link href="/account" className="text-lg font-bold">
+          Weather Buddy
+        </Link>
 
         {menuExpanded ? (
           <div
