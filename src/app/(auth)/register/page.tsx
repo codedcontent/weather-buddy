@@ -51,11 +51,11 @@ const RegisterPage = () => {
     });
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-max flex flex-col">
       {/* Login CTA */}
       <div className="w-full">
         <p className="text-lg font-semibold">Create an account</p>
-        <p className="font-light">
+        <p className="font-light md:text-base text-sm">
           Create your Weather Buddy account to stay ahead of the mother-nature
         </p>
       </div>
@@ -66,7 +66,7 @@ const RegisterPage = () => {
         onSubmit={handleSubmit}
       >
         {/* First & Last name */}
-        <div className="flex w-full gap-6">
+        <div className="flex md:flex-row flex-col w-full md:gap-6 gap-2">
           <CustomTextField
             label="First Name"
             touched={touched.firstName}
@@ -82,7 +82,7 @@ const RegisterPage = () => {
         </div>
 
         {/* Email and Number */}
-        <div className="flex w-full gap-6">
+        <div className="flex md:flex-row flex-col w-full md:gap-6 gap-2">
           <CustomTextField
             label="Email"
             touched={touched.email}
@@ -98,7 +98,7 @@ const RegisterPage = () => {
         </div>
 
         {/* Password */}
-        <div className="flex w-full gap-6">
+        <div className="flex md:flex-row flex-col w-full md:gap-6 gap-2">
           <CustomTextField
             label="Password"
             touched={touched.password}
@@ -126,7 +126,7 @@ const RegisterPage = () => {
       {/* Create Account */}
       <Link
         href={"/login"}
-        className="text-sm underline font-light float-right mt-6"
+        className="text-sm underline font-light float-right md:mt-6 text-center"
       >
         Already have an account? Login here
       </Link>

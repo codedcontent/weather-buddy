@@ -21,7 +21,7 @@ const AuthLayout: React.FC<Props> = ({ children }) => {
       </div>
 
       {/* Sign up && Log in screen */}
-      <section className="lg:w-[70%] w-[90%] m-auto h-[90%] bg-wb-boardColor rounded-3xl p-8 lg:mr-8 relative">
+      <section className="lg:w-[70%] w-[90%] m-auto h-[90%] bg-wb-boardColor rounded-3xl px-8 py-4 lg:mr-8 relative md:overflow-auto overflow-y-scroll">
         {children}
       </section>
     </main>
