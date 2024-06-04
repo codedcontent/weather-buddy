@@ -12,6 +12,10 @@ export const POST = async (request: Request) => {
   const { firstName, lastName, email, phoneNumber, password } =
     await request.json();
 
+  if (!firstName || !lastName || !email || !phoneNumber || !password) {
+    return new NextResponse("Provide the required data", { status: 400 });
+  }
+
   // Check if the new users email already exist on db
   const foundUser = await User.findOne({ email });
 
