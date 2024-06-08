@@ -1,34 +1,97 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# API Name
 
-## Getting Started
+This is the API for weather buddy.
 
-First, run the development server:
+## Table of Contents
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+- [API Name](#api-name)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Authentication](#authentication)
+  - [Endpoints](#endpoints)
+    - [Endpoint 1](#endpoint-1)
+      - [Request](#request)
+      - [Response](#response)
+    - [Endpoint 2](#endpoint-2)
+  - [Request and Response Formats](#request-and-response-formats)
+  - [Error Handling](#error-handling)
+  - [Usage Examples](#usage-examples)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Additional Sections](#additional-sections)
+
+## Introduction
+
+Use this API to effectively perform Authentications and CRUD request.
+
+## Authentication
+
+Describe how users need to authenticate to use the API. Include details about any API keys, tokens, or authentication methods required.
+
+## Endpoints
+
+List and describe the API endpoints available. Include details about the HTTP methods (GET, POST, PUT, DELETE), the URL paths, and a brief description of what each endpoint does.
+
+### Endpoint 1
+
+- **URL**: `/api/auth/register`
+- **Method**: POST
+- **Description**: This endpoint is used to register a new user.
+
+#### Request
+
+This endpoint does not require any request body or parameters.
+
+#### Response
+
+- **Status**: 200 OK
+
+```json
+{
+  "id": 123,
+  "name": "Sample Resource",
+  "description": "This is a sample resource returned from Endpoint 1.",
+  "timestamp": "2023-10-31T14:30:00Z",
+  "tags": ["sample", "demo", "endpoint"],
+  "data": {
+    "field1": "value1",
+    "field2": "value2"
+  }
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Endpoint 2
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **URL**: `/api/endpoint2`
+- **Method**: POST
+- **Description**: Describe what this endpoint does and any request body requirements.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Request and Response Formats
 
-## Learn More
+Explain the format of requests and responses. Include details about data types, headers, and any required or optional fields.
 
-To learn more about Next.js, take a look at the following resources:
+## Error Handling
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Describe how errors are handled in the API, including error response formats and HTTP status codes. Provide examples of error responses.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Usage Examples
 
-## Deploy on Vercel
+Include examples of how to use the API, including sample requests and responses for each endpoint. These examples can help users understand how to interact with your API.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Encourage others to contribute to your API documentation and provide guidelines on how they can do so. Mention your preferred method of communication, contribution guidelines, and other relevant details.
+
+## License
+
+State the license under which your API is released. For example:
+
+This API is licensed under the [Your License Name] - see the [LICENSE](LICENSE) file for details.
+
+## Additional Sections
+
+Depending on the complexity of your API and the specific needs of your users, you may want to include additional sections such as "Rate Limiting," "Versioning," or "Change Log."
+
+---
+
+[Optional: Include badges, logos, or any other relevant images or icons that represent your API.]

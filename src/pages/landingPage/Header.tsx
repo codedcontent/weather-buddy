@@ -42,8 +42,7 @@ const Header = () => {
         {/* Account access options */}
         <div className="flex gap-6 w-max">
           <Link
-            // href="login"
-            href="https://weather-buddy.ck.page/exclusive"
+            href="login"
             target="_blank"
             className="px-12 py-1.5 border border-wb-primary rounded-2xl text-wb-primary text-sm"
           >
@@ -51,8 +50,7 @@ const Header = () => {
           </Link>
 
           <Link
-            // href="register"
-            href="https://weather-buddy.ck.page/exclusive"
+            href="register"
             target="_blank"
             className="px-12 py-1.5 border bg-wb-primary rounded-2xl text-white text-sm"
           >

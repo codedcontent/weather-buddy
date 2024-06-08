@@ -73,7 +73,8 @@ const SubscriptionPlans = () => {
   const changeSubscriptionPlan = () => {
     setIsLoading(true);
 
-    router.push(`/premium-plan?email=${auth.email}`);
+    // router.push(`/premium-plan?email=${auth.email}`);
+    router.push(`/upgrade-plan`);
 
     // const url = `/api/subscriptions/${auth.id}`;
   };
